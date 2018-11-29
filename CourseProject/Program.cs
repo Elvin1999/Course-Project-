@@ -14,7 +14,7 @@ namespace CourseProject
             Username = username;
             Status = status;
             Password = password;
-            
+
         }
         public string Email { get; set; }
         public string Username { get; set; }
@@ -44,6 +44,7 @@ namespace CourseProject
         public decimal MinSalary { get; set; }
         public string PhoneNumber { get; set; }
         public int Category { get; set; }
+        //write ecperience category selection property
         public List<string> Experience = new List<string>() {
              "1 ilden asagi",
              "1 ilden - 3 ile qeder",
@@ -54,7 +55,7 @@ namespace CourseProject
         {
             "Programmer","Journalist","IT Specialist"
         };
-        public Worker(string name, string surname, int age, string gender,int category, string education, string city, decimal minSalary, string phoneNumber, User user)
+        public Worker(string name, string surname, int age, string gender, int category, string education, string city, decimal minSalary, string phoneNumber, User user)
             : base(user.Email, user.Username, user.Status, user.Password)
         {
             Name = name;
@@ -83,14 +84,71 @@ namespace CourseProject
         }
     }
 
-    class Employee : User { }
+    class Employee : User
+    {
+        public string AdvertisementName { get; set; }
+        public string CompanyName { get; set; }
+        //change name
+        public int Category { get; set; }
+        public string InformationAboutWork { get; set; }
+        public string City { get; set; }
+        public string Salary { get; set; }
+        public int MinimumAge { get; set; }
+        public int Education { get; set; }
+        public int Experience { get; set; }
+        public string PhoneNumber { get; set; }
+        public List<string> ExperienceCategory = new List<string>() {
+             "1 ilden asagi",
+             "1 ilden - 3 ile qeder",
+             "3 ilden - 5 ile qeder",
+             "5 ilden daha cox"
+        };
+        public List<string> EducationCategories = new List<string>()
+        {
+            "orta", "natamam ali", "ali"
+        };
+        public List<string> Categories = new List<string>()
+        {
+            "Programmer","Journalist","IT Specialist"
+        };
+
+        public Employee(string advertisementName, string companyName, int category, string ınformationAboutWork,
+            string city, string salary, int minimumAge, int education, int experience, string phoneNumber, User user)
+            : base(user.Email, user.Username, user.Status, user.Password)
+        {
+            AdvertisementName = advertisementName;
+            CompanyName = companyName;
+            Category = category;
+            InformationAboutWork = ınformationAboutWork;
+            City = city;
+            Salary = salary;
+            MinimumAge = minimumAge;
+            Education = education;
+            Experience = experience;
+            PhoneNumber = phoneNumber;
+        }
+    }
     class Controller
     {
-
+        List<Worker> workerlist = new List<Worker>();
+        List<Employee> employeelist = new List<Employee>();
+        //name surname and so on for parametr
+        public bool WorkerRegistriation()
+        {
+            return false;
+        }
+        public bool UserRegistriation()
+        {
+            return false;
+        }
+        public bool EmployeeRegistriation()
+        {
+            return false;
+        }
         public void Run()
         {
             User user = new User("camalzade_elvin@mail.ru", "Elvin1999", "Worker", "123456798");
-            Worker worker = new Worker("Elvin", "Camalzade", 19, "Male",1, "Bachelor", "Baku", 800m, "0515848762", user);
+            Worker worker = new Worker("Elvin", "Camalzade", 19, "Male", 1, "Bachelor", "Baku", 800m, "0515848762", user);
             worker.ShowWorker();
             //Console.ForegroundColor = ConsoleColor.Blue;
             //Console.WriteLine("\t\t\t=============================================================================");
