@@ -45,7 +45,7 @@ namespace CourseProject
         public decimal MinSalary { get; set; }
         public string PhoneNumber { get; set; }
         public int Category { get; set; }
-        //write ecperience category selection property
+        public int ExperienceCategory { get; set; }
         public List<string> Experience = new List<string>() {
              "1 ilden asagi",
              "1 ilden - 3 ile qeder",
@@ -56,7 +56,7 @@ namespace CourseProject
         {
             "Programmer","Journalist","IT Specialist"
         };
-        public Worker(string name, string surname, int age, string gender, int category, string education, string city, decimal minSalary, string phoneNumber, User user)
+        public Worker(string name, string surname, int age, string gender, int category, int experiencecategory, string education, string city, decimal minSalary, string phoneNumber, User user)
             : base(user.Email, user.Username, user.Status, user.Password)
         {
             Name = name;
@@ -68,6 +68,7 @@ namespace CourseProject
             MinSalary = minSalary;
             PhoneNumber = phoneNumber;
             Category = category;
+            ExperienceCategory = experiencecategory;
         }
         public void ShowWorker()
         {
@@ -138,31 +139,81 @@ namespace CourseProject
         {
             return false;
         }
-        public void UserRegistriation()//you have to return User type
+        public User UserRegistriation()//you have to return User type
         {
             string username, mail, status, password;
             do
             {
                 Console.Write("Username - >");
                 username = Console.ReadLine();
-               
+                if (!CheckUsername(username))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("You have to write at least one \"Uppercase\" letter");
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                }
             } while (!CheckUsername(username));
             do
             {
                 Console.Write("Password - >");
                 password = Console.ReadLine();
-
+                if (!CheckPassword(password))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("You have to write at least one \"Uppercase\" letter" +
+                        "one symbol or number");
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                }
             } while (!CheckPassword(password));
-            ////mail 
-            ///status
+            do
+            {
+                Console.Write("Mail - >");
+                mail = Console.ReadLine();
+                if (!CheckMail(mail))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Please write correct your mail");
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                }
+            } while (!CheckMail(mail));
+            do
+            {
+                Console.Write("Status - >");
+                status = Console.ReadLine();
+                if (!CheckStatus(status))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Yout status can be only \"worker\" or \"employee\"");
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                }
+            } while (!CheckStatus(status));
+            return new User(mail, username, status, password);
         }
-        public bool EmployeeRegistriation()
+        public bool CheckStatus(string status)
         {
+            var newstring = status.ToLower();
+            if (newstring == "worker" || newstring == "employee")
+            {
+                return true;
+            }
+            return false;
+        }
+        //public bool EmployeeRegistriation()
+        //{
+        //    return false;
+        //}
+        public bool CheckMail(string mail)
+        {
+            Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+            if (regex.IsMatch(mail))
+            {
+                return true;
+            }
             return false;
         }
         public bool CheckUsername(string username)
         {
-            Regex name = new Regex(@"^[A-Z]{1}?[a-zA-Z0-9]{1,15}?");
+            Regex name = new Regex(@"^[A-Z]{1,3}?[a-zA-Z0-9]{8,12}?");
             if (name.IsMatch(username))
             {
                 return true;
@@ -171,27 +222,56 @@ namespace CourseProject
         }
         public bool CheckPassword(string password)
         {
-            Regex pass = new Regex(@"^[A-Z]{1}?[a-zA-Z0-9]{7}?");
+            if (password.Length > 15)
+            {
+                return false;
+            }
+            Regex pass = new Regex(@"^[A-Z]{1,3}?[a-zA-Z0-9]{2,10}?[!-/_]{0,3}?[a-zA-Z0-9]{5,10}?[!-/_]{0,3}");
             if (pass.IsMatch(password))
             {
                 return true;
             }
             return false;//test
         }
+        public void ShowInterfaceOfProgram()
+        {
+
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("\t\t\t=============================================================================");
+            Console.WriteLine("\t\t\t||                                                                         ||");
+            Console.WriteLine("\t\t\t||                        ADVERTISEMENT SITE                               ||");
+            Console.WriteLine("\t\t\t||                                                                         ||");
+            Console.WriteLine("\t\t\t=============================================================================");
+            Console.WriteLine();
+        }
         public void Run()
         {
             Console.ForegroundColor = ConsoleColor.Blue;
-            User user = new User("camalzade_elvin@mail.ru", "Elvin1999", "Worker", "123456798");
-            Worker worker = new Worker("Elvin", "Camalzade", 19, "Male", 1, "Bachelor", "Baku", 800m, "0515848762", user);
-            worker.ShowWorker();
-            //Console.ForegroundColor = ConsoleColor.Blue;
-            //Console.WriteLine("\t\t\t=============================================================================");
-            //Console.WriteLine("\t\t\t||                                                                         ||");
-            //Console.WriteLine("\t\t\t||                        ADVERTISEMENT SITE                               ||");
-            //Console.WriteLine("\t\t\t||                                                                         ||");
-            //Console.WriteLine("\t\t\t=============================================================================");
-            Console.WriteLine(); Console.Write("\t\t\t\tSIGN IN (1) SIGN UP (2)");
+            //User user = new User("camalzade_elvin@mail.ru", "Elvin1999", "Worker", "123456798");
+            //Worker worker = new Worker("Elvin", "Camalzade", 19, "Male", 1, 2, "Bachelor", "Baku", 800m, "0515848762", user);
+            //worker.ShowWorker();
+            User newuser;
+            Console.Write("\t\t\t\tSIGN IN (1) SIGN UP (2)");
             int selection = Convert.ToInt32(Console.ReadLine());
+            if (selection == 1)
+            {
+                //SIGN IN
+            }
+            else if (selection == 2)
+            {
+                newuser = UserRegistriation();
+                newuser.ShowUserProperty();
+                if (newuser.Status == "worker")
+                {
+                    //worker registr
+                }
+                else if (newuser.Status == "employee")
+                {
+                    //employee registr
+                }
+            }
+
+
         }
     }
 
