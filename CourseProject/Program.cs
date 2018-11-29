@@ -19,10 +19,16 @@ namespace CourseProject
         public string Username { get; set; }
         public string Status { get; set; }
         public string Password { get; set; }
-
+        public void ShowUserProperty()
+        {
+            Console.WriteLine($"Email - > {Email}");
+            Console.WriteLine($"Username - > {Username}");
+            Console.WriteLine($"Status - > {Status}");
+            Console.WriteLine($"Password - > {Password}");
+        }
     }
     class Worker : User
-    {
+    { 
         public string Name { get; set; }
         public string Surname { get; set; }
         public int Age { get; set; }
@@ -52,10 +58,28 @@ namespace CourseProject
             MinSalary = minSalary;
             PhoneNumber = phoneNumber;
         }
+        public void ShowWorker()
+        {
+            Console.WriteLine("========================");
+            Console.WriteLine($"Name - > {Name}");
+            Console.WriteLine($"Surname - > {Surname}");
+            Console.WriteLine($"Age - > {Age}");
+            Console.WriteLine($"Gender - > {Gender}");
+            Console.WriteLine($"Education - > {Education}");
+            ShowUserProperty();
+        }
     }
 
     class Employee :User { }
-    class Controller { }
+    class Controller {
+
+        public void Run()
+        {
+            User user = new User("camalzade_elvin@mail.ru", "Elvin1999", "Worker", "123456798");
+            Worker worker = new Worker("Elvin", "Camalzade", 19, "Male", "Bachelor", "Baku", 800m, "0515848762", user);
+
+        }
+    }
 
 
     class Program
