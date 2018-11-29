@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 namespace CourseProject
 {
@@ -137,16 +138,49 @@ namespace CourseProject
         {
             return false;
         }
-        public bool UserRegistriation()
+        public void UserRegistriation()//you have to return User type
         {
-            return false;
+            string username, mail, status, password;
+            do
+            {
+                Console.Write("Username - >");
+                username = Console.ReadLine();
+               
+            } while (!CheckUsername(username));
+            do
+            {
+                Console.Write("Password - >");
+                password = Console.ReadLine();
+
+            } while (!CheckPassword(password));
+            ////mail 
+            ///status
         }
         public bool EmployeeRegistriation()
         {
             return false;
         }
+        public bool CheckUsername(string username)
+        {
+            Regex name = new Regex(@"^[A-Z]{1}?[a-zA-Z0-9]{1,15}?");
+            if (name.IsMatch(username))
+            {
+                return true;
+            }
+            return false;//test
+        }
+        public bool CheckPassword(string password)
+        {
+            Regex pass = new Regex(@"^[A-Z]{1}?[a-zA-Z0-9]{7}?");
+            if (pass.IsMatch(password))
+            {
+                return true;
+            }
+            return false;//test
+        }
         public void Run()
         {
+            Console.ForegroundColor = ConsoleColor.Blue;
             User user = new User("camalzade_elvin@mail.ru", "Elvin1999", "Worker", "123456798");
             Worker worker = new Worker("Elvin", "Camalzade", 19, "Male", 1, "Bachelor", "Baku", 800m, "0515848762", user);
             worker.ShowWorker();
