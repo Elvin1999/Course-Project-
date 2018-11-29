@@ -141,7 +141,7 @@ namespace CourseProject
         }
         public User UserRegistriation()//you have to return User type
         {
-            string username, mail, status, password;
+            string username, mail, status, password,checkpassword;
             do
             {
                 Console.Write("Username - >");
@@ -165,6 +165,18 @@ namespace CourseProject
                     Console.ForegroundColor = ConsoleColor.Blue;
                 }
             } while (!CheckPassword(password));
+
+            do
+            {
+                Console.Write("Write your password again for checking - >");
+                checkpassword = Console.ReadLine();
+                if(checkpassword != password)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Please write correct your password");
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                }
+            } while (checkpassword != password);
             do
             {
                 Console.Write("Mail - >");
@@ -235,7 +247,6 @@ namespace CourseProject
         }
         public void ShowInterfaceOfProgram()
         {
-
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("\t\t\t=============================================================================");
             Console.WriteLine("\t\t\t||                                                                         ||");
