@@ -91,10 +91,12 @@ namespace CourseProject
             //worker.ShowWorker();
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("=============================================================================");
+            Console.WriteLine("|                                                                           |");
+            Console.WriteLine("|                         ADVERTISEMENT SITE                                |");
+            Console.WriteLine("|                                                                           |");
             Console.WriteLine("=============================================================================");
-            Console.Write("\t\t\tWorker 1 Employee 2 - >");
+            Console.WriteLine(); Console.Write("SIGN IN (1) SIGN UP (2)");
             int selection = Convert.ToInt32(Console.ReadLine());
-
         }
     }
 
