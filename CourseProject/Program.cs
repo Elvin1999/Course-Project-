@@ -14,6 +14,7 @@ namespace CourseProject
             Username = username;
             Status = status;
             Password = password;
+            
         }
         public string Email { get; set; }
         public string Username { get; set; }
@@ -24,19 +25,24 @@ namespace CourseProject
             Console.WriteLine($"Email - > {Email}");
             Console.WriteLine($"Username - > {Username}");
             Console.WriteLine($"Status - > {Status}");
-            Console.WriteLine($"Password - > {Password}");
+            Console.Write($"Password - > ");
+            for (int i = 0; i < Password.Length; i++)
+            {
+                Console.Write('*');
+            }
+            Console.WriteLine();
         }
     }
     class Worker : User
-    { 
+    {
         public string Name { get; set; }
         public string Surname { get; set; }
         public int Age { get; set; }
         public string Gender { get; set; }
         public string Education { get; set; }
         public string City { get; set; }
-        public decimal MinSalary { get; set;}
-        public string PhoneNumber { get; set;}
+        public decimal MinSalary { get; set; }
+        public string PhoneNumber { get; set; }
         public List<string> Experience = new List<string>() {
              "1 ilden asagi",
              "1 ilden - 3 ile qeder",
@@ -47,7 +53,8 @@ namespace CourseProject
         {
             "Programmer","Journalist","IT Specialist"
         };
-        public Worker(string name, string surname, int age, string gender, string education, string city, decimal minSalary, string phoneNumber, User user) : base(user.Email, user.Username, user.Status, user.Password)
+        public Worker(string name, string surname, int age, string gender, string education, string city, decimal minSalary, string phoneNumber, User user)
+            : base(user.Email, user.Username, user.Status, user.Password)
         {
             Name = name;
             Surname = surname;
@@ -66,17 +73,27 @@ namespace CourseProject
             Console.WriteLine($"Age - > {Age}");
             Console.WriteLine($"Gender - > {Gender}");
             Console.WriteLine($"Education - > {Education}");
+            Console.WriteLine($"City - > {City}");
+            Console.WriteLine($"Minimum Salary - > {MinSalary}");
+            Console.WriteLine($"Phone number - > {PhoneNumber}");
             ShowUserProperty();
         }
     }
 
-    class Employee :User { }
-    class Controller {
+    class Employee : User { }
+    class Controller
+    {
 
         public void Run()
         {
-            User user = new User("camalzade_elvin@mail.ru", "Elvin1999", "Worker", "123456798");
-            Worker worker = new Worker("Elvin", "Camalzade", 19, "Male", "Bachelor", "Baku", 800m, "0515848762", user);
+            //User user = new User("camalzade_elvin@mail.ru", "Elvin1999", "Worker", "123456798");
+            //Worker worker = new Worker("Elvin", "Camalzade", 19, "Male", "Bachelor", "Baku", 800m, "0515848762", user);
+            //worker.ShowWorker();
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("=============================================================================");
+            Console.WriteLine("=============================================================================");
+            Console.Write("\t\t\tWorker 1 Employee 2 - >");
+            int selection = Convert.ToInt32(Console.ReadLine());
 
         }
     }
@@ -86,7 +103,8 @@ namespace CourseProject
     {
         static void Main(string[] args)
         {
-
+            Controller controller = new Controller();
+            controller.Run();
         }
     }
 }
