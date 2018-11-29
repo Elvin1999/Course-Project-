@@ -7,10 +7,7 @@ namespace CourseProject
 {
     class User
     {
-        public User()
-        {
-
-        }
+        public User() { }
         public User(string email, string username, string status, string password)
         {
             Email = email;
@@ -18,7 +15,6 @@ namespace CourseProject
             Status = status;
             Password = password;
         }
-
         public string Email { get; set; }
         public string Username { get; set; }
         public string Status { get; set; }
