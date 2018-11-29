@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.IO;
 namespace CourseProject
 {
     class User
@@ -41,6 +43,7 @@ namespace CourseProject
     }
     class Worker : User
     {
+        public Worker() { }
         public string Name { get; set; }
         public string Surname { get; set; }
         public int Age { get; set; }
@@ -107,6 +110,7 @@ namespace CourseProject
     }
     class Employee : User
     {
+        public Employee() { }
         public string AdvertisementName { get; set; }
         public string CompanyName { get; set; }
         //change name
@@ -153,7 +157,60 @@ namespace CourseProject
     {
         List<Worker> workerlist = new List<Worker>();
         List<Employee> employeelist = new List<Employee>();
-        //name surname and so on for parametr
+        JsonSerializer json = new JsonSerializer();
+        public Controller()
+        {
+            FileInfo fileinfo = new FileInfo("workers.json");
+            FileInfo fileinfo2 = new FileInfo("employee.json");
+            if (!fileinfo.Exists)
+            {
+                SerializerToJasonWorkers();
+            }
+            if (fileinfo.Exists)
+            {
+                workerlist = DeserializerFromJasonWorkers();
+            }
+            if (!fileinfo2.Exists)
+            {
+                SerializerToJasonEmployee();
+            }
+            if (fileinfo2.Exists)
+            {
+                employeelist = DeserializerFromJasonEmployee();
+            }
+        }
+        public void SerializerToJasonWorkers()
+        {
+            using (StreamWriter sw = new StreamWriter("workers.json"))
+            {
+                json.Serialize(sw, workerlist);
+            }
+        }
+        public List<Worker> DeserializerFromJasonWorkers()
+        {
+            using (StreamReader sr = new StreamReader("workers.json"))
+            {
+                string reader = sr.ReadToEnd();
+                workerlist = JsonConvert.DeserializeObject<List<Worker>>(reader);
+                return workerlist;
+            }
+        }
+        public void SerializerToJasonEmployee()
+        {
+            using (StreamWriter sw = new StreamWriter("employee.json"))
+            {
+                json.Serialize(sw, employeelist);
+            }
+        }
+        public List<Employee> DeserializerFromJasonEmployee()
+        {
+            using (StreamReader sr = new StreamReader("employee.json"))
+            {
+                string reader = sr.ReadToEnd();
+                employeelist = JsonConvert.DeserializeObject<List<Employee>>(reader);
+                return employeelist;
+            }
+        }
         public Worker WorkerRegistriation(User user)
         {
             int age, categorys, excategory, educategory;
@@ -317,8 +374,8 @@ namespace CourseProject
             //User user = new User("camalzade_elvin@mail.ru", "Elvin1999", "Worker", "123456798");
             //Worker worker = new Worker("Elvin", "Camalzade", 19, "Male", 1, 2, "Bachelor", "Baku", 800m, "0515848762", user);
             //worker.ShowWorker();
-            User newuser; Worker worker;
-            Console.Write("\t\t\t\tSIGN IN (1) SIGN UP (2)");
+            User newuser; Worker worker;           
+            Console.Write("\t\t\t\tSIGN IN (1) SIGN UP (2) show list (3)");
             int selection = Convert.ToInt32(Console.ReadLine());
             if (selection == 1)
             {
@@ -331,12 +388,24 @@ namespace CourseProject
                 {
                     worker = WorkerRegistriation(newuser);
                     Console.Clear();
-                    worker.ShowWorker();
+                   // worker.ShowWorker();
                     workerlist.Add(worker);
+                    SerializerToJasonWorkers();
+                    
                 }
                 else if (newuser.Status == "employee")
                 {
                     //employee registr
+                }
+            }
+            else if (selection == 3)
+            {
+                int count = 0;
+                foreach (var item in workerlist)
+                {
+                    ++count;
+                    Console.WriteLine($"[{count}]");
+                    item.ShowWorker();
                 }
             }
 
