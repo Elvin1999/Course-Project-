@@ -23,15 +23,20 @@ namespace CourseProject
         public string Password { get; set; }
         public void ShowUserProperty()
         {
+            Console.WriteLine("__________________________________\n");
             Console.WriteLine($"Email - > {Email}");
+            Console.WriteLine("__________________________________\n");
             Console.WriteLine($"Username - > {Username}");
+            Console.WriteLine("__________________________________\n");
             Console.WriteLine($"Status - > {Status}");
+            Console.WriteLine("__________________________________\n");
             Console.Write($"Password - > ");
             for (int i = 0; i < Password.Length; i++)
             {
                 Console.Write('*');
             }
             Console.WriteLine();
+            Console.WriteLine("__________________________________\n");
         }
     }
     class Worker : User
@@ -40,7 +45,7 @@ namespace CourseProject
         public string Surname { get; set; }
         public int Age { get; set; }
         public string Gender { get; set; }
-        public string Education { get; set; }
+        public int Education { get; set; }
         public string City { get; set; }
         public decimal MinSalary { get; set; }
         public string PhoneNumber { get; set; }
@@ -52,18 +57,22 @@ namespace CourseProject
              "3 ilden - 5 ile qeder",
              "5 ilden daha cox"
         };
+        public List<string> EducationCategories = new List<string>()
+        {
+            "Orta", "Natamam Ali", "Ali"
+        };
         public List<string> Categories = new List<string>()
         {
             "Programmer","Journalist","IT Specialist"
         };
-        public Worker(string name, string surname, int age, string gender, int category, int experiencecategory, string education, string city, decimal minSalary, string phoneNumber, User user)
+        public Worker(string name, string surname, int age, string gender, int category, int experiencecategory, int educationcategory, string city, decimal minSalary, string phoneNumber, User user)
             : base(user.Email, user.Username, user.Status, user.Password)
         {
             Name = name;
             Surname = surname;
             Age = age;
             Gender = gender;
-            Education = education;
+            Education = educationcategory;
             City = city;
             MinSalary = minSalary;
             PhoneNumber = phoneNumber;
@@ -72,20 +81,30 @@ namespace CourseProject
         }
         public void ShowWorker()
         {
-            Console.WriteLine("========================");
+            Console.WriteLine("__________________________________\n");
             Console.WriteLine($"Name - > {Name}");
+            Console.WriteLine("__________________________________\n");
             Console.WriteLine($"Surname - > {Surname}");
+            Console.WriteLine("__________________________________\n");
             Console.WriteLine($"Age - > {Age}");
+            Console.WriteLine("__________________________________\n");
             Console.WriteLine($"Gender - > {Gender}");
-            Console.WriteLine($"Education - > {Education}");
+            Console.WriteLine("__________________________________\n");
+            Console.WriteLine($"Education - > {EducationCategories[Education - 1]}");
+            Console.WriteLine("__________________________________\n");
+            Console.WriteLine($"Experience - > {Experience[ExperienceCategory - 1]}");
+            Console.WriteLine("__________________________________\n");
             Console.WriteLine($"City - > {City}");
+            Console.WriteLine("__________________________________\n");
             Console.WriteLine($"Minimum Salary - > {MinSalary}");
+            Console.WriteLine("__________________________________\n");
             Console.WriteLine($"Phone number - > {PhoneNumber}");
-            Console.WriteLine($"Category - > {Categories[Category]}");
+            Console.WriteLine("__________________________________\n");
+            Console.WriteLine($"Category - > {Categories[Category - 1]}");
+            Console.WriteLine("__________________________________\n");
             ShowUserProperty();
         }
     }
-
     class Employee : User
     {
         public string AdvertisementName { get; set; }
@@ -111,7 +130,7 @@ namespace CourseProject
         };
         public List<string> Categories = new List<string>()
         {
-            "Programmer","Journalist","IT Specialist"
+            "Programmer","Journalist","IT Specialist","Doctor","Translater"
         };
 
         public Employee(string advertisementName, string companyName, int category, string ınformationAboutWork,
@@ -135,13 +154,40 @@ namespace CourseProject
         List<Worker> workerlist = new List<Worker>();
         List<Employee> employeelist = new List<Employee>();
         //name surname and so on for parametr
-        public bool WorkerRegistriation()
+        public Worker WorkerRegistriation(User user)
         {
-            return false;
+            int age, categorys, excategory, educategory;
+            decimal minsalary;
+            string name, surname, gender, city, phonenumber;
+            Console.Write("Name - >"); name = Console.ReadLine();
+            Console.Write("Surname - >"); surname = Console.ReadLine();
+            Console.Write("Age - >"); age = Convert.ToInt32(Console.ReadLine());
+            do
+            {
+                Console.Write("Gender(male,female)"); gender = Console.ReadLine();
+            } while (!(gender == "male" || gender == "female"));
+            Console.WriteLine("Speciality__");
+            Console.WriteLine("Programmer 1" + "Journalist 2" + "IT Specialist 3" + "Doctor 4" + "Translater 5");
+            categorys = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Experience year__");
+            Console.WriteLine("1 ilden asagi select (1)\n" +
+             "1 ilden - 3 ile qeder select (2)\n" +
+             "3 ilden - 5 ile qeder select (3)\n" +
+             "5 ilden daha cox select (4)");
+            excategory = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Education__");
+            Console.WriteLine("orta (1)" + "natamam ali (2)" + "ali (3)");
+            educategory = Convert.ToInt32(Console.ReadLine());
+            Console.Write("City - >"); city = Console.ReadLine();
+            Console.Write("Minimum salary - >"); minsalary = Convert.ToDecimal(Console.ReadLine());
+            Console.WriteLine("PhoneNumber - >");
+            phonenumber = Console.ReadLine();////is not ready this part
+            return new Worker(name, surname, age, gender, categorys, excategory, educategory, city,
+                minsalary, phonenumber, user);
         }
         public User UserRegistriation()//you have to return User type
         {
-            string username, mail, status, password,checkpassword;
+            string username, mail, status, password, checkpassword;
             do
             {
                 Console.Write("Username - >");
@@ -170,7 +216,7 @@ namespace CourseProject
             {
                 Console.Write("Write your password again for checking - >");
                 checkpassword = Console.ReadLine();
-                if(checkpassword != password)
+                if (checkpassword != password)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Please write correct your password");
@@ -190,17 +236,27 @@ namespace CourseProject
             } while (!CheckMail(mail));
             do
             {
-                Console.Write("Status - >");
+                Console.Write("Status - > Worker or Employee (only these)");
                 status = Console.ReadLine();
                 if (!CheckStatus(status))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Yout status can be only \"worker\" or \"employee\"");
+                    Console.WriteLine("Your status can be only \"worker\" or \"employee\"");
                     Console.ForegroundColor = ConsoleColor.Blue;
                 }
             } while (!CheckStatus(status));
             return new User(mail, username, status, password);
         }
+        //public bool CheckPhoneNumber(string phonenumber)
+        //{
+        //    Regex regex = new Regex(@"");
+        //    if (regex.IsMatch(phonenumber))
+        //    {
+        //        Console.WriteLine("Yes");return true;
+        //    }
+        //    Console.WriteLine("No");
+        //    return false;
+        //}
         public bool CheckStatus(string status)
         {
             var newstring = status.ToLower();
@@ -261,7 +317,7 @@ namespace CourseProject
             //User user = new User("camalzade_elvin@mail.ru", "Elvin1999", "Worker", "123456798");
             //Worker worker = new Worker("Elvin", "Camalzade", 19, "Male", 1, 2, "Bachelor", "Baku", 800m, "0515848762", user);
             //worker.ShowWorker();
-            User newuser;
+            User newuser; Worker worker;
             Console.Write("\t\t\t\tSIGN IN (1) SIGN UP (2)");
             int selection = Convert.ToInt32(Console.ReadLine());
             if (selection == 1)
@@ -271,10 +327,12 @@ namespace CourseProject
             else if (selection == 2)
             {
                 newuser = UserRegistriation();
-                newuser.ShowUserProperty();
                 if (newuser.Status == "worker")
                 {
-                    //worker registr
+                    worker = WorkerRegistriation(newuser);
+                    Console.Clear();
+                    worker.ShowWorker();
+                    workerlist.Add(worker);
                 }
                 else if (newuser.Status == "employee")
                 {
@@ -293,6 +351,7 @@ namespace CourseProject
         {
             Controller controller = new Controller();
             controller.Run();
+
         }
     }
 }
