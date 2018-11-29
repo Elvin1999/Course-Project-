@@ -33,7 +33,7 @@ namespace CourseProject
             Console.WriteLine($"Status - > {Status}");
             Console.WriteLine("__________________________________\n");
             Console.Write($"Password - > ");
-            for (int i = 0; i < Password.Length; i++)
+            for (int i = 0; i < Password.Length / 2; i++)
             {
                 Console.Write('*');
             }
@@ -242,6 +242,16 @@ namespace CourseProject
             return new Worker(name, surname, age, gender, categorys, excategory, educategory, city,
                 minsalary, phonenumber, user);
         }
+        public string ToHidePassword(string password)
+        {
+            string newstr = "";
+            Random random = new Random();
+            for (int i = 0; i < password.Length; i++)
+            {
+                newstr += (int)password[random.Next(0,password.Length)];
+            }
+            return newstr;
+        }
         public User UserRegistriation()//you have to return User type
         {
             string username, mail, status, password, checkpassword;
@@ -302,6 +312,7 @@ namespace CourseProject
                     Console.ForegroundColor = ConsoleColor.Blue;
                 }
             } while (!CheckStatus(status));
+            password = ToHidePassword(password);
             return new User(mail, username, status, password);
         }
         //public bool CheckPhoneNumber(string phonenumber)
@@ -374,7 +385,7 @@ namespace CourseProject
             //User user = new User("camalzade_elvin@mail.ru", "Elvin1999", "Worker", "123456798");
             //Worker worker = new Worker("Elvin", "Camalzade", 19, "Male", 1, 2, "Bachelor", "Baku", 800m, "0515848762", user);
             //worker.ShowWorker();
-            User newuser; Worker worker;           
+            User newuser; Worker worker;
             Console.Write("\t\t\t\tSIGN IN (1) SIGN UP (2) show list (3)");
             int selection = Convert.ToInt32(Console.ReadLine());
             if (selection == 1)
@@ -388,10 +399,9 @@ namespace CourseProject
                 {
                     worker = WorkerRegistriation(newuser);
                     Console.Clear();
-                   // worker.ShowWorker();
                     workerlist.Add(worker);
                     SerializerToJasonWorkers();
-                    
+
                 }
                 else if (newuser.Status == "employee")
                 {
@@ -400,6 +410,7 @@ namespace CourseProject
             }
             else if (selection == 3)
             {
+                Console.Clear();
                 int count = 0;
                 foreach (var item in workerlist)
                 {
