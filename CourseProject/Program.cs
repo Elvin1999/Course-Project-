@@ -33,7 +33,7 @@ namespace CourseProject
             Console.WriteLine($"Status - > {Status}");
             Console.WriteLine("__________________________________\n");
             Console.Write($"Password - > ");
-            for (int i = 0; i < Password.Length / 2; i++)
+            for (int i = 0; i < Password.Length; i++)
             {
                 Console.Write('*');
             }
@@ -68,7 +68,8 @@ namespace CourseProject
         {
             "Programmer","Journalist","IT Specialist"
         };
-        public Worker(string name, string surname, int age, string gender, int category, int experiencecategory, int educationcategory, string city, decimal minSalary, string phoneNumber, User user)
+        public Worker(string name, string surname, int age, string gender, int category, int experiencecategory,
+            int educationcategory, string city, decimal minSalary, string phoneNumber, User user)
             : base(user.Email, user.Username, user.Status, user.Password)
         {
             Name = name;
@@ -117,7 +118,7 @@ namespace CourseProject
         public int Category { get; set; }
         public string InformationAboutWork { get; set; }
         public string City { get; set; }
-        public string Salary { get; set; }
+        public decimal Salary { get; set; }
         public int MinimumAge { get; set; }
         public int Education { get; set; }
         public int Experience { get; set; }
@@ -138,7 +139,7 @@ namespace CourseProject
         };
 
         public Employee(string advertisementName, string companyName, int category, string ınformationAboutWork,
-            string city, string salary, int minimumAge, int education, int experience, string phoneNumber, User user)
+            string city, decimal salary, int minimumAge, int education, int experience, string phoneNumber, User user)
             : base(user.Email, user.Username, user.Status, user.Password)
         {
             AdvertisementName = advertisementName;
@@ -248,7 +249,7 @@ namespace CourseProject
             Random random = new Random();
             for (int i = 0; i < password.Length; i++)
             {
-                newstr += (int)password[random.Next(0,password.Length)];
+                newstr += (int)password[random.Next(0, password.Length)];
             }
             return newstr;
         }
@@ -263,7 +264,6 @@ namespace CourseProject
             c = (char)random.Next(48, 57);
             d = (char)random.Next(97, 122);
             char[] chars = { a, b, c, d };
-
             for (int i = 0; i < vs.Length; i++)
             {
                 char temp = chars[random.Next(chars.Length)];
@@ -276,7 +276,7 @@ namespace CourseProject
             str = new string(vs);
             return str;
         }
-        public User UserRegistriation()//you have to return User type
+        public User UserRegistriation()
         {
             string username, mail, status, password, checkpassword;
             do
@@ -335,7 +335,7 @@ namespace CourseProject
                     Console.ForegroundColor = ConsoleColor.Blue;
                 }
             } while (!CheckStatus(status));
-            password = ToHidePassword(password);string code;string codecheck;
+            password = ToHidePassword(password); string code; string codecheck;
             do
             {
                 code = RandomCode();
@@ -364,10 +364,34 @@ namespace CourseProject
             }
             return false;
         }
-        //public bool EmployeeRegistriation()
-        //{
-        //    return false;
-        //}
+        public Employee EmployeeRegistriation(User user)
+        {
+            string advname, companyname, information, city, phonenumber; decimal salary;
+            int categorys = 1, minAge = 1, education = 1, experience = 1;//realize delete defoult value
+            Console.Write("Advertisement name - >");
+            advname = Console.ReadLine();
+            Console.Write("Company name - >");
+            companyname = Console.ReadLine();
+            Console.WriteLine("Speciality__");
+            Console.WriteLine("Programmer 1" + "Journalist 2" + "IT Specialist 3" + "Doctor 4" + "Translater 5");
+            categorys = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Information about work - >");
+            information = Console.ReadLine();
+            Console.WriteLine("Experience year__");
+            Console.WriteLine("1 ilden asagi select (1)\n" +
+             "1 ilden - 3 ile qeder select (2)\n" +
+             "3 ilden - 5 ile qeder select (3)\n" +
+             "5 ilden daha cox select (4)");
+            experience = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Education__");
+            Console.WriteLine("orta (1)" + "natamam ali (2)" + "ali (3)");
+            education = Convert.ToInt32(Console.ReadLine());
+            Console.Write("City - >"); city = Console.ReadLine();
+            Console.Write("Minimum salary - >"); salary = Convert.ToDecimal(Console.ReadLine());
+            Console.WriteLine("PhoneNumber - >");
+            phonenumber = Console.ReadLine();////is not ready this part
+            return new Employee(advname, companyname, categorys, information, city, salary, minAge, education, experience, phonenumber, user);
+        }
         public bool CheckMail(string mail)
         {
             Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
@@ -415,7 +439,7 @@ namespace CourseProject
             //User user = new User("camalzade_elvin@mail.ru", "Elvin1999", "Worker", "123456798");
             //Worker worker = new Worker("Elvin", "Camalzade", 19, "Male", 1, 2, "Bachelor", "Baku", 800m, "0515848762", user);
             //worker.ShowWorker();
-            User newuser; Worker worker;
+            User newuser; Worker worker;Employee employee;
             Console.Write("\t\t\t\tSIGN IN (1) SIGN UP (2) show list (3)");
             int selection = Convert.ToInt32(Console.ReadLine());
             if (selection == 1)
@@ -435,19 +459,31 @@ namespace CourseProject
                 }
                 else if (newuser.Status == "employee")
                 {
-                    //employee registr
+                    employee = EmployeeRegistriation(newuser);
+                    Console.Clear();
+                    employeelist.Add(employee);
+                    SerializerToJasonEmployee();
                 }
             }
             else if (selection == 3)
             {
                 Console.Clear();
                 int count = 0;
+                Console.WriteLine("WORKERSLIST");
                 foreach (var item in workerlist)
                 {
                     ++count;
                     Console.WriteLine($"[{count}]");
                     item.ShowWorker();
                 }
+                Console.WriteLine("EMPLOYEELIST");count = 0;
+                foreach (var item in employeelist)
+                {
+                    ++count;
+                    Console.WriteLine($"[{count}]");
+                    
+                }
+
             }
 
 
