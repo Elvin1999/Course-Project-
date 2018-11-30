@@ -252,6 +252,30 @@ namespace CourseProject
             }
             return newstr;
         }
+        public string RandomCode()
+        {
+            Random random = new Random();
+            char a, b, c, d;
+            string str = string.Empty;
+            var vs = new char[4];
+            a = (char)random.Next(65, 90);
+            b = (char)random.Next(97, 122);
+            c = (char)random.Next(48, 57);
+            d = (char)random.Next(97, 122);
+            char[] chars = { a, b, c, d };
+
+            for (int i = 0; i < vs.Length; i++)
+            {
+                char temp = chars[random.Next(chars.Length)];
+
+                if (!vs.Contains(temp))
+                    vs[i] = temp;
+                else
+                    --i;
+            }
+            str = new string(vs);
+            return str;
+        }
         public User UserRegistriation()//you have to return User type
         {
             string username, mail, status, password, checkpassword;
@@ -278,7 +302,6 @@ namespace CourseProject
                     Console.ForegroundColor = ConsoleColor.Blue;
                 }
             } while (!CheckPassword(password));
-
             do
             {
                 Console.Write("Write your password again for checking - >");
@@ -312,10 +335,17 @@ namespace CourseProject
                     Console.ForegroundColor = ConsoleColor.Blue;
                 }
             } while (!CheckStatus(status));
-            password = ToHidePassword(password);
+            password = ToHidePassword(password);string code;string codecheck;
+            do
+            {
+                code = RandomCode();
+                Console.Write($"Random code - > [{code}]\n");
+                Console.Write("Write random code - >");
+                codecheck = Console.ReadLine();
+            } while (codecheck != code);
             return new User(mail, username, status, password);
         }
-        //public bool CheckPhoneNumber(string phonenumber)
+        //public bool CheckPhoneNumber(string phonenumber)//it is not ready 
         //{
         //    Regex regex = new Regex(@"");
         //    if (regex.IsMatch(phonenumber))
@@ -423,8 +453,6 @@ namespace CourseProject
 
         }
     }
-
-
     class Program
     {
         static void Main(string[] args)
