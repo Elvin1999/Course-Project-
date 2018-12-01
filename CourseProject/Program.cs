@@ -500,7 +500,7 @@ namespace CourseProject
                         }
                         else if (select == 2)
                         {
-                            //Search Job
+                            Console.WriteLine("");
                         }
                         else if (select == 3)
                         {
@@ -508,7 +508,17 @@ namespace CourseProject
                         }
                         else if (select == 4)
                         {
+                            int counter = 0;
                             foreach (var item in employeelist)
+                            {
+
+                                Console.Write($" {item.Categories[counter]} [{counter}]");
+                                ++counter;
+                            }
+                            Console.WriteLine(); Console.WriteLine("Write specialty number");
+                            int selectspeciality = Convert.ToInt32(Console.ReadLine());
+                            var collections = employeelist.Where(x => x.Categories[selectspeciality] == x.SpecialityCategory);
+                            foreach (var item in collections)
                             {
                                 item.ShowEmployeeAdversitement();
                             }
