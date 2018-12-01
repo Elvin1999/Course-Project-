@@ -56,20 +56,20 @@ namespace CourseProject
         public string ExperienceCategory { get; set; }
         [JsonIgnore]
         public List<string> Experience = new List<string>() {
-             "1 ilden asagi",
-             "1 ilden - 3 ile qeder",
-             "3 ilden - 5 ile qeder",
-             "5 ilden daha cox"
+             "Less than 1 years",
+             "From 1 until 3 years",
+             "From 5 until 5 years",
+             "More than 5 years"
         };
         [JsonIgnore]
         public List<string> EducationCategories = new List<string>()
         {
-            "Orta", "Natamam Ali", "Ali"
+            "Medium","Uncompleted high degree","High degree"
         };
         [JsonIgnore]
         public List<string> Categories = new List<string>()
         {
-            "Programmer","Journalist","IT Specialist"
+            "Programmer","Journalist","IT Specialist","Doctor","Translater"
         };
         public Worker(string name, string surname, int age, string gender, int category, int experiencecategory,
             int educationcategory, string city, decimal minSalary, string phoneNumber, User user)
@@ -127,15 +127,15 @@ namespace CourseProject
         public string PhoneNumber { get; set; }
         [JsonIgnore]
         public List<string> ExperienceCategory = new List<string>() {
-             "1 ilden asagi",
-             "1 ilden - 3 ile qeder",
-             "3 ilden - 5 ile qeder",
-             "5 ilden daha cox"
+            "Less than 1 years",
+             "From 1 until 3 years",
+             "From 5 until 5 years",
+             "More than 5 years"
         };
         [JsonIgnore]
         public List<string> EducationCategories = new List<string>()
         {
-            "orta", "natamam ali", "ali"
+           "Medium","Uncompleted high degree","High degree"
         };
         [JsonIgnore]
         public List<string> Categories = new List<string>()
@@ -159,9 +159,11 @@ namespace CourseProject
         }
         public void ShowEmployeeAdversitement()
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("_____________________________________\n");
-            Console.WriteLine($"Adversitement name - > {AdvertisementName}");
+            Console.WriteLine($"Adversitement name - > {AdvertisementName}");            
             Console.WriteLine("_____________________________________\n");
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine($"Company name - > {CompanyName}");
             Console.WriteLine("_____________________________________\n");
             Console.WriteLine($"Speciality - > {SpecialityCategory}");
@@ -282,13 +284,11 @@ namespace CourseProject
             Console.WriteLine("Programmer 1" + "Journalist 2" + "IT Specialist 3" + "Doctor 4" + "Translater 5");
             categorys = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Experience year__");
-            Console.WriteLine("1 ilden asagi select (1)\n" +
-             "1 ilden - 3 ile qeder select (2)\n" +
-             "3 ilden - 5 ile qeder select (3)\n" +
-             "5 ilden daha cox select (4)");
+            Console.WriteLine("Less than 1 [1]"+"From 1 until 3 years [2]"+ "From 1 until 3 years[3]"+
+                "More than 5 years[4]");
             excategory = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Education__");
-            Console.WriteLine("orta (1)" + "natamam ali (2)" + "ali (3)");
+            Console.WriteLine("Medium (1)" + "Uncompleted high degree (2)" + "high degree (3)");
             educategory = Convert.ToInt32(Console.ReadLine());
             Console.Write("City - >"); city = Console.ReadLine();
             Console.Write("Minimum salary - >"); minsalary = Convert.ToDecimal(Console.ReadLine());
@@ -437,13 +437,13 @@ namespace CourseProject
             Console.Write("Information about work - >");
             information = Console.ReadLine();
             Console.WriteLine("Experience year__");
-            Console.WriteLine("1 ilden asagi select (1)\n" +
-             "1 ilden - 3 ile qeder select (2)\n" +
-             "3 ilden - 5 ile qeder select (3)\n" +
-             "5 ilden daha cox select (4)");
+            Console.WriteLine("Less than 1 year select (1)\n" +
+             "From 1 until 3 years select (2)\n" +
+             "From 3 until 5 years select (3)\n" +
+             "More than 5 years select (4)");
             experience = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Education__");
-            Console.WriteLine("orta (1)" + "natamam ali (2)" + "ali (3)");
+            Console.WriteLine("Medium (1)" + "Uncompleted high degree (2)" + "High degree (3)");
             education = Convert.ToInt32(Console.ReadLine());
             Console.Write("City - >"); city = Console.ReadLine();
             Console.Write("Minimum salary - >"); salary = Convert.ToDecimal(Console.ReadLine());
@@ -501,18 +501,18 @@ namespace CourseProject
             Console.Clear();
             if (selection == 1)
             {//SIGN IN
-                var usernew = SignIn(); int select1; bool cv = false;
+                var usernew = SignIn(); int select1;
                 if (usernew.Status == "worker")
                 {
                     while (true)
                     {
                         Console.Clear();
                         Console.WriteLine("Create your CV [1]\nSearch Job [2]\n Show your CV [3]\nShow all adversitement [4]" +
-                            "\nLog Out [5]");
+                            " Search Job with category [5]\nLog Out [6]");
                         Console.Write("Select - > "); select1 = Convert.ToInt32(Console.ReadLine());
                         if (select1 == 1)
                         {
-                            cv = true;
+                           
                             worker = WorkerRegistriation(usernew);
                             workerlist.Add(worker);
                             SerializerToJasonWorkers();
@@ -542,6 +542,10 @@ namespace CourseProject
                         }
                         else if (select1 == 5)
                         {
+                            //Search with category
+                        }
+                        else if (select1 == 6)
+                        {
                             return 1;
                         }
                         Console.WriteLine("Back to Worker Menu select [0]");
@@ -568,7 +572,7 @@ namespace CourseProject
             }
             else if (selection == 2)
             {   //SIGN UP
-                int select; bool CV = false;
+                int select;
                 newuser = UserRegistriation();//you have to add to list
                 users.Add(newuser);
                 SerializerToJasonUsers();
@@ -582,7 +586,6 @@ namespace CourseProject
                         Console.Write("Select - > "); select = Convert.ToInt32(Console.ReadLine());
                         if (select == 1)
                         {
-                            CV = true;
                             worker = WorkerRegistriation(newuser);
                             workerlist.Add(worker);
                             SerializerToJasonWorkers();
@@ -597,7 +600,6 @@ namespace CourseProject
                         }
                         else if (select == 4)
                         {
-                            int counter = 0;
                             for (int i = 0; i < workerlist[0].Categories.Count; i++)
                             {
                                 Console.Write($" {workerlist[0].Categories[i]} [{i}]");
@@ -621,7 +623,6 @@ namespace CourseProject
                             continue;
                         }
                     }
-
                 }
                 else if (newuser.Status == "employee")
                 {
