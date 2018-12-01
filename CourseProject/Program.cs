@@ -48,22 +48,25 @@ namespace CourseProject
         public string Surname { get; set; }
         public int Age { get; set; }
         public string Gender { get; set; }
-        public int Education { get; set; }
+        public string Education { get; set; }
         public string City { get; set; }
         public decimal MinSalary { get; set; }
         public string PhoneNumber { get; set; }
-        public int Category { get; set; }
-        public int ExperienceCategory { get; set; }
+        public string SpecialityCategory { get; set; }
+        public string ExperienceCategory { get; set; }
+        [JsonIgnore]
         public List<string> Experience = new List<string>() {
              "1 ilden asagi",
              "1 ilden - 3 ile qeder",
              "3 ilden - 5 ile qeder",
              "5 ilden daha cox"
         };
+        [JsonIgnore]
         public List<string> EducationCategories = new List<string>()
         {
             "Orta", "Natamam Ali", "Ali"
         };
+        [JsonIgnore]
         public List<string> Categories = new List<string>()
         {
             "Programmer","Journalist","IT Specialist"
@@ -76,12 +79,12 @@ namespace CourseProject
             Surname = surname;
             Age = age;
             Gender = gender;
-            Education = educationcategory;
+            Education = EducationCategories[educationcategory-1];
             City = city;
             MinSalary = minSalary;
             PhoneNumber = phoneNumber;
-            Category = category;
-            ExperienceCategory = experiencecategory;
+            SpecialityCategory = Categories[category-1];
+            ExperienceCategory = Experience[experiencecategory-1];
         }
         public void ShowWorker()
         {
@@ -94,9 +97,9 @@ namespace CourseProject
             Console.WriteLine("__________________________________\n");
             Console.WriteLine($"Gender - > {Gender}");
             Console.WriteLine("__________________________________\n");
-            Console.WriteLine($"Education - > {EducationCategories[Education - 1]}");
+            Console.WriteLine($"Education - > {Education}");
             Console.WriteLine("__________________________________\n");
-            Console.WriteLine($"Experience - > {Experience[ExperienceCategory - 1]}");
+            Console.WriteLine($"Experience - > {ExperienceCategory}");
             Console.WriteLine("__________________________________\n");
             Console.WriteLine($"City - > {City}");
             Console.WriteLine("__________________________________\n");
@@ -104,7 +107,7 @@ namespace CourseProject
             Console.WriteLine("__________________________________\n");
             Console.WriteLine($"Phone number - > {PhoneNumber}");
             Console.WriteLine("__________________________________\n");
-            Console.WriteLine($"Category - > {Categories[Category - 1]}");
+            Console.WriteLine($"Category - > {SpecialityCategory}");
             Console.WriteLine("__________________________________\n");
             ShowUserProperty();
         }
@@ -115,43 +118,69 @@ namespace CourseProject
         public string AdvertisementName { get; set; }
         public string CompanyName { get; set; }
         //change name
-        public int Category { get; set; }
+        public string SpecialityCategory { get; set; }
         public string InformationAboutWork { get; set; }
         public string City { get; set; }
         public decimal Salary { get; set; }
         public int MinimumAge { get; set; }
-        public int Education { get; set; }
-        public int Experience { get; set; }
+        public string Education { get; set; }
+        public string Experience { get; set; }
         public string PhoneNumber { get; set; }
+        [JsonIgnore]
         public List<string> ExperienceCategory = new List<string>() {
              "1 ilden asagi",
              "1 ilden - 3 ile qeder",
              "3 ilden - 5 ile qeder",
              "5 ilden daha cox"
         };
+        [JsonIgnore]
         public List<string> EducationCategories = new List<string>()
         {
             "orta", "natamam ali", "ali"
         };
+        [JsonIgnore]
         public List<string> Categories = new List<string>()
         {
             "Programmer","Journalist","IT Specialist","Doctor","Translater"
         };
-
         public Employee(string advertisementName, string companyName, int category, string ınformationAboutWork,
             string city, decimal salary, int minimumAge, int education, int experience, string phoneNumber, User user)
             : base(user.Email, user.Username, user.Status, user.Password)
         {
             AdvertisementName = advertisementName;
             CompanyName = companyName;
-            Category = category;
+            SpecialityCategory = Categories[category-1];
             InformationAboutWork = ınformationAboutWork;
             City = city;
             Salary = salary;
             MinimumAge = minimumAge;
-            Education = education;
-            Experience = experience;
+            Education = EducationCategories[education-1];
+            Experience = ExperienceCategory[experience-1];
             PhoneNumber = phoneNumber;
+        }
+        public void ShowEmployeeAdversitement()
+        {
+            Console.WriteLine("_____________________________________\n");
+            Console.WriteLine($"Adversitement name - > {AdvertisementName}");
+            Console.WriteLine("_____________________________________\n");
+            Console.WriteLine($"Company name - > {CompanyName}");
+            Console.WriteLine("_____________________________________\n");
+            Console.WriteLine($"Speciality - > {SpecialityCategory}");
+            Console.WriteLine("_____________________________________\n");
+            Console.WriteLine($"Information about work - > {InformationAboutWork}");
+            Console.WriteLine("_____________________________________\n");
+            Console.WriteLine($"City - > {City}");
+            Console.WriteLine("_____________________________________\n");
+            Console.WriteLine($"Salary - > {Salary}");
+            Console.WriteLine("_____________________________________\n");
+            Console.WriteLine($"Minimum age - > {MinimumAge}");
+            Console.WriteLine("_____________________________________\n");
+            Console.WriteLine($"Education - > {Education}");
+            Console.WriteLine("_____________________________________\n");
+            Console.WriteLine($"Experience year - > {Experience}");
+            Console.WriteLine("_____________________________________\n");
+            Console.WriteLine($"Phone number - > {PhoneNumber}");
+            Console.WriteLine("_____________________________________\n");
         }
     }
     class Controller
@@ -279,6 +308,7 @@ namespace CourseProject
         public User UserRegistriation()
         {
             string username, mail, status, password, checkpassword;
+            string newstatus;
             do
             {
                 Console.Write("Username - >");
@@ -328,7 +358,8 @@ namespace CourseProject
             {
                 Console.Write("Status - > Worker or Employee (only these)");
                 status = Console.ReadLine();
-                if (!CheckStatus(status))
+                newstatus = status.ToLower();
+                if (!CheckStatus(newstatus))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Your status can be only \"worker\" or \"employee\"");
@@ -343,7 +374,7 @@ namespace CourseProject
                 Console.Write("Write random code - >");
                 codecheck = Console.ReadLine();
             } while (codecheck != code);
-            return new User(mail, username, status, password);
+            return new User(mail, username, newstatus, password);
         }
         //public bool CheckPhoneNumber(string phonenumber)//it is not ready 
         //{
@@ -367,7 +398,7 @@ namespace CourseProject
         public Employee EmployeeRegistriation(User user)
         {
             string advname, companyname, information, city, phonenumber; decimal salary;
-            int categorys = 1, minAge = 1, education = 1, experience = 1;//realize delete defoult value
+            int categorys, minAge, education, experience;//realize delete defoult value
             Console.Write("Advertisement name - >");
             advname = Console.ReadLine();
             Console.Write("Company name - >");
@@ -375,6 +406,8 @@ namespace CourseProject
             Console.WriteLine("Speciality__");
             Console.WriteLine("Programmer 1" + "Journalist 2" + "IT Specialist 3" + "Doctor 4" + "Translater 5");
             categorys = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Age - >");
+            minAge = Convert.ToInt32(Console.ReadLine());
             Console.Write("Information about work - >");
             information = Console.ReadLine();
             Console.WriteLine("Experience year__");
@@ -442,12 +475,13 @@ namespace CourseProject
             User newuser; Worker worker;Employee employee;
             Console.Write("\t\t\t\tSIGN IN (1) SIGN UP (2) show list (3)");
             int selection = Convert.ToInt32(Console.ReadLine());
+            Console.Clear();
             if (selection == 1)
             {
                 //SIGN IN
             }
             else if (selection == 2)
-            {
+            {//sign up
                 newuser = UserRegistriation();
                 if (newuser.Status == "worker")
                 {
@@ -469,33 +503,41 @@ namespace CourseProject
             {
                 Console.Clear();
                 int count = 0;
-                Console.WriteLine("WORKERSLIST");
-                foreach (var item in workerlist)
-                {
-                    ++count;
-                    Console.WriteLine($"[{count}]");
-                    item.ShowWorker();
-                }
+                //Console.WriteLine("WORKERSLIST");
+                //foreach (var item in workerlist)
+                //{
+                //    ++count;
+                //    Console.WriteLine($"[{count}]");
+                //    item.ShowWorker();
+                //}
                 Console.WriteLine("EMPLOYEELIST");count = 0;
                 foreach (var item in employeelist)
                 {
                     ++count;
                     Console.WriteLine($"[{count}]");
-                    
+                    item.ShowEmployeeAdversitement();
                 }
-
             }
-
-
         }
     }
     class Program
     {
         static void Main(string[] args)
         {
-            Controller controller = new Controller();
-            controller.Run();
-
+            Controller controller;int selection;
+            while (true)
+            {
+                controller = new Controller();
+                controller.Run();
+                Console.WriteLine("Back to the MENU select 4");
+                selection = Convert.ToInt32(Console.ReadLine());
+                if (selection == 4)
+                {
+                    Console.Clear();
+                    continue;
+                }
+            }
+            
         }
     }
 }
