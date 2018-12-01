@@ -186,16 +186,18 @@ namespace CourseProject
     {
         List<Worker> workerlist = new List<Worker>();
         List<Employee> employeelist = new List<Employee>();
+        List<User> users = new List<User>();
         JsonSerializer json = new JsonSerializer();
         public Controller()
         {
             FileInfo fileinfo = new FileInfo("workers.json");
             FileInfo fileinfo2 = new FileInfo("employee.json");
+            FileInfo fileinfo3 = new FileInfo("users.json");
             if (!fileinfo.Exists)
             {
                 SerializerToJasonWorkers();
             }
-            if (fileinfo.Exists)
+            else if (fileinfo.Exists)
             {
                 workerlist = DeserializerFromJasonWorkers();
             }
@@ -203,9 +205,17 @@ namespace CourseProject
             {
                 SerializerToJasonEmployee();
             }
-            if (fileinfo2.Exists)
+            else if (fileinfo2.Exists)
             {
                 employeelist = DeserializerFromJasonEmployee();
+            }
+            if (!fileinfo3.Exists)
+            {
+                SerializerToJasonUsers();
+            }
+            else if (fileinfo3.Exists)
+            {
+                users = DeserializerFromJasonUsers();
             }
         }
         public void SerializerToJasonWorkers()
@@ -238,6 +248,22 @@ namespace CourseProject
                 string reader = sr.ReadToEnd();
                 employeelist = JsonConvert.DeserializeObject<List<Employee>>(reader);
                 return employeelist;
+            }
+        }
+        public void SerializerToJasonUsers()
+        {
+            using (StreamWriter sw = new StreamWriter("users.json"))
+            {
+                json.Serialize(sw, users);
+            }
+        }
+        public List<User> DeserializerFromJasonUsers()
+        {
+            using (StreamReader sr = new StreamReader("users.json"))
+            {
+                string reader = sr.ReadToEnd();
+                users = JsonConvert.DeserializeObject<List<User>>(reader);
+                return users;
             }
         }
         public Worker WorkerRegistriation(User user)
@@ -365,7 +391,8 @@ namespace CourseProject
                     Console.ForegroundColor = ConsoleColor.Blue;
                 }
             } while (!CheckStatus(status));
-            password = ToHidePassword(password); string code; string codecheck;
+            //password = ToHidePassword(password);
+            string code; string codecheck;
             do
             {
                 code = RandomCode();
@@ -468,21 +495,83 @@ namespace CourseProject
         public int Run()
         {
             Console.ForegroundColor = ConsoleColor.Blue;
-            //User user = new User("camalzade_elvin@mail.ru", "Elvin1999", "Worker", "123456798");
-            //Worker worker = new Worker("Elvin", "Camalzade", 19, "Male", 1, 2, "Bachelor", "Baku", 800m, "0515848762", user);
-            //worker.ShowWorker();
-            User newuser; Worker worker = new Worker(); Employee employee;
+            User newuser; Worker worker = new Worker(); Employee employee;            
             Console.Write("\t\t\t\tSIGN IN (1) SIGN UP (2) Exit (3)");
             int selection = Convert.ToInt32(Console.ReadLine());
             Console.Clear();
             if (selection == 1)
-            {
-                SignIn();
+            {//SIGN IN
+                var usernew = SignIn(); int select1; bool cv = false;
+                if (usernew.Status == "worker")
+                {
+                    while (true)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Create your CV [1]\nSearch Job [2]\n Show your CV [3]\nShow all adversitement [4]" +
+                            "\nLog Out [5]");
+                        Console.Write("Select - > "); select1 = Convert.ToInt32(Console.ReadLine());
+                        if (select1 == 1)
+                        {
+                            cv = true;
+                            worker = WorkerRegistriation(usernew);
+                            workerlist.Add(worker);
+                            SerializerToJasonWorkers();
+                        }
+                        else if (select1 == 2)
+                        {                            
+                            Console.WriteLine("");
+                        }
+                        else if (select1 == 3)
+                        {
+                            var workercv = workerlist.SingleOrDefault(x=>x.Username==usernew.Username);
+                            workercv.ShowWorker();
+                        }
+                        else if (select1 == 4)
+                        {
+                            for (int i = 0; i < workerlist[0].Categories.Count; i++)
+                            {
+                                Console.Write($" {workerlist[0].Categories[i]} [{i}]");
+                            }
+                            Console.WriteLine(); Console.WriteLine("Write specialty number");
+                            int selectspeciality = Convert.ToInt32(Console.ReadLine());
+                            var collections = employeelist.Where(x => x.Categories[selectspeciality] == x.SpecialityCategory);
+                            foreach (var item in collections)
+                            {
+                                item.ShowEmployeeAdversitement();
+                            }
+                        }
+                        else if (select1 == 5)
+                        {
+                            return 1;
+                        }
+                        Console.WriteLine("Back to Worker Menu select [0]");
+                        select1 = Convert.ToInt32(Console.ReadLine());
+                        if (select1 == 0)
+                        {
+                            continue;
+                        }
+                    }
+                }
+                else if (usernew.Status == "employee")
+                {
+                    Console.Clear();
+                    var workercv = employeelist.SingleOrDefault(x => x.Username == usernew.Username);
+                    Console.WriteLine("_______________________________________\n");
+                    Console.WriteLine("__________YOUR_ADVERTISEMENT___________");
+                    Console.WriteLine("_______________________________________\n");
+                    workercv.ShowEmployeeAdversitement();
+                    Console.WriteLine("LOG OUT select 5");
+                    int choose = Convert.ToInt32(Console.ReadLine());
+                    if (choose == 5) return 1;
+                }
+
             }
             else if (selection == 2)
             {   //SIGN UP
                 int select; bool CV = false;
                 newuser = UserRegistriation();//you have to add to list
+                users.Add(newuser);
+                SerializerToJasonUsers();
                 if (newuser.Status == "worker")
                 {
                     while (true)
@@ -509,12 +598,10 @@ namespace CourseProject
                         else if (select == 4)
                         {
                             int counter = 0;
-                            foreach (var item in employeelist)
+                            for (int i = 0; i < workerlist[0].Categories.Count; i++)
                             {
-
-                                Console.Write($" {item.Categories[counter]} [{counter}]");
-                                ++counter;
-                            }
+                                Console.Write($" {workerlist[0].Categories[i]} [{i}]");
+                            }                                                          
                             Console.WriteLine(); Console.WriteLine("Write specialty number");
                             int selectspeciality = Convert.ToInt32(Console.ReadLine());
                             var collections = employeelist.Where(x => x.Categories[selectspeciality] == x.SpecialityCategory);
@@ -550,9 +637,25 @@ namespace CourseProject
             }
             return 1;
         }
-        public void SignIn()
+        public User SignIn()
         {
-
+            bool check;User myuser;
+            do
+            {
+                Console.Write("Username - >");
+                string username = Console.ReadLine();
+                Console.Write("Password - >");
+                string password = Console.ReadLine();
+                myuser = users.SingleOrDefault(x => x.Username == username && x.Password == password);
+                check = myuser is User;
+                if (!check)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Your username or password is not correct");
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                }
+            } while (!check);
+            return myuser;
         }
     }
     class Program
@@ -569,7 +672,6 @@ namespace CourseProject
                     continue;
                 }
             }
-
         }
     }
 }
