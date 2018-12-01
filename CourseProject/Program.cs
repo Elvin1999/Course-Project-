@@ -79,12 +79,12 @@ namespace CourseProject
             Surname = surname;
             Age = age;
             Gender = gender;
-            Education = EducationCategories[educationcategory-1];
+            Education = EducationCategories[educationcategory - 1];
             City = city;
             MinSalary = minSalary;
             PhoneNumber = phoneNumber;
-            SpecialityCategory = Categories[category-1];
-            ExperienceCategory = Experience[experiencecategory-1];
+            SpecialityCategory = Categories[category - 1];
+            ExperienceCategory = Experience[experiencecategory - 1];
         }
         public void ShowWorker()
         {
@@ -109,7 +109,6 @@ namespace CourseProject
             Console.WriteLine("__________________________________\n");
             Console.WriteLine($"Category - > {SpecialityCategory}");
             Console.WriteLine("__________________________________\n");
-            ShowUserProperty();
         }
     }
     class Employee : User
@@ -149,13 +148,13 @@ namespace CourseProject
         {
             AdvertisementName = advertisementName;
             CompanyName = companyName;
-            SpecialityCategory = Categories[category-1];
+            SpecialityCategory = Categories[category - 1];
             InformationAboutWork = ınformationAboutWork;
             City = city;
             Salary = salary;
             MinimumAge = minimumAge;
-            Education = EducationCategories[education-1];
-            Experience = ExperienceCategory[experience-1];
+            Education = EducationCategories[education - 1];
+            Experience = ExperienceCategory[experience - 1];
             PhoneNumber = phoneNumber;
         }
         public void ShowEmployeeAdversitement()
@@ -466,29 +465,65 @@ namespace CourseProject
             Console.WriteLine("\t\t\t=============================================================================");
             Console.WriteLine();
         }
-        public void Run()
+        public int Run()
         {
             Console.ForegroundColor = ConsoleColor.Blue;
             //User user = new User("camalzade_elvin@mail.ru", "Elvin1999", "Worker", "123456798");
             //Worker worker = new Worker("Elvin", "Camalzade", 19, "Male", 1, 2, "Bachelor", "Baku", 800m, "0515848762", user);
             //worker.ShowWorker();
-            User newuser; Worker worker;Employee employee;
-            Console.Write("\t\t\t\tSIGN IN (1) SIGN UP (2) show list (3)");
+            User newuser; Worker worker = new Worker(); Employee employee;
+            Console.Write("\t\t\t\tSIGN IN (1) SIGN UP (2) Exit (3)");
             int selection = Convert.ToInt32(Console.ReadLine());
             Console.Clear();
             if (selection == 1)
             {
-                //SIGN IN
+                SignIn();
             }
             else if (selection == 2)
-            {//sign up
-                newuser = UserRegistriation();
+            {   //SIGN UP
+                int select; bool CV = false;
+                newuser = UserRegistriation();//you have to add to list
                 if (newuser.Status == "worker")
                 {
-                    worker = WorkerRegistriation(newuser);
-                    Console.Clear();
-                    workerlist.Add(worker);
-                    SerializerToJasonWorkers();
+                    while (true)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Create your CV [1]\nSearch Job [2]\n Show your CV [3]\nShow all adversitement [4]" +
+                            "\nLog Out [5]");
+                        Console.Write("Select - > "); select = Convert.ToInt32(Console.ReadLine());
+                        if (select == 1)
+                        {
+                            CV = true;
+                            worker = WorkerRegistriation(newuser);
+                            workerlist.Add(worker);
+                            SerializerToJasonWorkers();
+                        }
+                        else if (select == 2)
+                        {
+                            //Search Job
+                        }
+                        else if (select == 3)
+                        {
+                            worker.ShowWorker();
+                        }
+                        else if (select == 4)
+                        {
+                            foreach (var item in employeelist)
+                            {
+                                item.ShowEmployeeAdversitement();
+                            }
+                        }
+                        else if (select == 5)
+                        {
+                            return 1;
+                        }
+                        Console.WriteLine("Back to Worker Menu select [0]");
+                        select = Convert.ToInt32(Console.ReadLine());
+                        if (select == 0)
+                        {
+                            continue;
+                        }
+                    }
 
                 }
                 else if (newuser.Status == "employee")
@@ -501,43 +536,30 @@ namespace CourseProject
             }
             else if (selection == 3)
             {
-                Console.Clear();
-                int count = 0;
-                //Console.WriteLine("WORKERSLIST");
-                //foreach (var item in workerlist)
-                //{
-                //    ++count;
-                //    Console.WriteLine($"[{count}]");
-                //    item.ShowWorker();
-                //}
-                Console.WriteLine("EMPLOYEELIST");count = 0;
-                foreach (var item in employeelist)
-                {
-                    ++count;
-                    Console.WriteLine($"[{count}]");
-                    item.ShowEmployeeAdversitement();
-                }
+                Environment.Exit(0);
             }
+            return 1;
+        }
+        public void SignIn()
+        {
+
         }
     }
     class Program
     {
         static void Main(string[] args)
         {
-            Controller controller;int selection;
             while (true)
             {
-                controller = new Controller();
-                controller.Run();
-                Console.WriteLine("Back to the MENU select 4");
-                selection = Convert.ToInt32(Console.ReadLine());
-                if (selection == 4)
+                Controller controller = new Controller();
+                var backtomenu = controller.Run();
+                if (backtomenu == 1)
                 {
                     Console.Clear();
                     continue;
                 }
             }
-            
+
         }
     }
 }
