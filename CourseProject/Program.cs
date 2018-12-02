@@ -25,13 +25,13 @@ namespace CourseProject
         public void ShowUserProperty()
         {
             Console.WriteLine("__________________________________\n");
-            Console.WriteLine($"Email - > {Email}");
+            Console.WriteLine($"|Email - > {Email}");
             Console.WriteLine("__________________________________\n");
-            Console.WriteLine($"Username - > {Username}");
+            Console.WriteLine($"|Username - > {Username}");
             Console.WriteLine("__________________________________\n");
-            Console.WriteLine($"Status - > {Status}");
+            Console.WriteLine($"|Status - > {Status}");
             Console.WriteLine("__________________________________\n");
-            Console.Write($"Password - > ");
+            Console.Write($"|Password - > ");
             for (int i = 0; i < Password.Length; i++)
             {
                 Console.Write('*');
@@ -88,25 +88,25 @@ namespace CourseProject
         public void ShowWorker()
         {
             Console.WriteLine("__________________________________\n");
-            Console.WriteLine($"Name - > {Name}");
+            Console.WriteLine($"|Name - > {Name}");
             Console.WriteLine("__________________________________\n");
-            Console.WriteLine($"Surname - > {Surname}");
+            Console.WriteLine($"|Surname - > {Surname}");
             Console.WriteLine("__________________________________\n");
-            Console.WriteLine($"Age - > {Age}");
+            Console.WriteLine($"|Age - > {Age}");
             Console.WriteLine("__________________________________\n");
-            Console.WriteLine($"Gender - > {Gender}");
+            Console.WriteLine($"|Gender - > {Gender}");
             Console.WriteLine("__________________________________\n");
-            Console.WriteLine($"Education - > {Education}");
+            Console.WriteLine($"|Education - > {Education}");
             Console.WriteLine("__________________________________\n");
-            Console.WriteLine($"Experience - > {ExperienceCategory}");
+            Console.WriteLine($"|Experience - > {ExperienceCategory}");
             Console.WriteLine("__________________________________\n");
-            Console.WriteLine($"City - > {City}");
+            Console.WriteLine($"|City - > {City}");
             Console.WriteLine("__________________________________\n");
-            Console.WriteLine($"Minimum Salary - > {MinSalary}");
+            Console.WriteLine($"|Minimum Salary - > {MinSalary}");
             Console.WriteLine("__________________________________\n");
-            Console.WriteLine($"Phone number - > {PhoneNumber}");
+            Console.WriteLine($"|Phone number - > {PhoneNumber}");
             Console.WriteLine("__________________________________\n");
-            Console.WriteLine($"Category - > {SpecialityCategory}");
+            Console.WriteLine($"|Category - > {SpecialityCategory}");
             Console.WriteLine("__________________________________\n");
         }
     }
@@ -281,14 +281,27 @@ namespace CourseProject
                 Console.Write("Gender(male,female)"); gender = Console.ReadLine();
             } while (!(gender == "male" || gender == "female"));
             Console.WriteLine("Speciality__");
-            Console.WriteLine("Programmer 1" + "Journalist 2" + "IT Specialist 3" + "Doctor 4" + "Translater 5");
+            //Console.WriteLine("Programmer 1" + "Journalist 2" + "IT Specialist 3" + "Doctor 4" + "Translater 5");
+            for (int i = 0; i < workerlist[0].Categories.Count; i++)
+            {
+                Console.Write($" {workerlist[0].Categories[i]} [{i + 1}]");
+            }
+            Console.WriteLine();
             categorys = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Experience year__");
-            Console.WriteLine("Less than 1 [1]" + "From 1 until 3 years [2]" + "From 1 until 3 years[3]" +
-                "More than 5 years[4]");
+            // Console.WriteLine("Less than 1 [1]" + "From 1 until 3 years [2]" + "From 1 until 3 years[3]" +
+            //   "More than 5 years[4]");
+            for (int i = 0; i < workerlist[0].Experience.Count; i++)
+            {
+                Console.Write($" {workerlist[0].Experience[i]} [{i + 1}]");
+            }
             excategory = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Education__");
-            Console.WriteLine("Medium (1)" + "Uncompleted high degree (2)" + "high degree (3)");
+            //Console.WriteLine("Medium (1)" + "Uncompleted high degree (2)" + "high degree (3)");
+            for (int i = 0; i < workerlist[0].EducationCategories.Count; i++)
+            {
+                Console.Write($" {workerlist[0].EducationCategories[i]} [{i + 1}]");
+            }
             educategory = Convert.ToInt32(Console.ReadLine());
             Console.Write("City - >"); city = Console.ReadLine();
             Console.Write("Minimum salary - >"); minsalary = Convert.ToDecimal(Console.ReadLine());
@@ -297,7 +310,7 @@ namespace CourseProject
             return new Worker(name, surname, age, gender, categorys, excategory, educategory, city,
                 minsalary, phonenumber, user);
         }
-        public string ToHidePassword(string password)
+        public string ToHidePassword(string password)//now i do not this method to hide something
         {
             string newstr = "";
             Random random = new Random();
@@ -460,20 +473,20 @@ namespace CourseProject
             advname = Console.ReadLine();
             Console.Write("Company name - >");
             companyname = Console.ReadLine();
-            Console.WriteLine("Speciality__");
+            Console.WriteLine("Speciality__");//replace dynamic (for)
             Console.WriteLine("Programmer 1" + "Journalist 2" + "IT Specialist 3" + "Doctor 4" + "Translater 5");
             categorys = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Age - >");
             minAge = Convert.ToInt32(Console.ReadLine());
             Console.Write("Information about work - >");
             information = Console.ReadLine();
-            Console.WriteLine("Experience year__");
+            Console.WriteLine("Experience year__");//replace dynamic (for)
             Console.WriteLine("Less than 1 year select (1)\n" +
              "From 1 until 3 years select (2)\n" +
              "From 3 until 5 years select (3)\n" +
              "More than 5 years select (4)");
             experience = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Education__");
+            Console.WriteLine("Education__");//replace dynamic (for)
             Console.WriteLine("Medium (1)" + "Uncompleted high degree (2)" + "High degree (3)");
             education = Convert.ToInt32(Console.ReadLine());
             Console.Write("City - >"); city = Console.ReadLine();
@@ -489,9 +502,10 @@ namespace CourseProject
                 if (!CheckPhoneNumber(phonenumber))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"Please write phonenumber correct (for example 0556556565");
+                    Console.WriteLine($"Please write phonenumber correct (for example 0556556565)");
                     Console.ForegroundColor = ConsoleColor.Blue;
                 }
+
             } while (!CheckPhoneNumber(phonenumber));
             return new Employee(advname, companyname, categorys, information, city, salary, minAge, education, experience, phonenumber, user);
         }
@@ -563,12 +577,20 @@ namespace CourseProject
                         }
                         else if (select1 == 2)
                         {
-                            Console.WriteLine("");
+                            Console.WriteLine("");//search job
                         }
                         else if (select1 == 3)
                         {
                             var workercv = workerlist.SingleOrDefault(x => x.Username == usernew.Username);
-                            workercv.ShowWorker();
+                            if (workercv == null)
+                            {
+                                Console.WriteLine("You do not have cv form please create your CV");
+                            }
+                            else
+                            {
+                                workercv.ShowWorker();
+                            }
+
                         }
                         else if (select1 == 4)
                         {
@@ -607,7 +629,11 @@ namespace CourseProject
                     Console.WriteLine("_______________________________________\n");
                     Console.WriteLine("__________YOUR_ADVERTISEMENT___________");
                     Console.WriteLine("_______________________________________\n");
-                    workercv.ShowEmployeeAdversitement();
+                    if (workercv != null)
+                    {
+                        workercv.ShowEmployeeAdversitement();
+                    }
+
                     Console.WriteLine("LOG OUT select 5");
                     int choose = Convert.ToInt32(Console.ReadLine());
                     if (choose == 5) return 1;
