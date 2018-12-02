@@ -17,7 +17,6 @@ namespace CourseProject
             Username = username;
             Status = status;
             Password = password;
-
         }
         public string Email { get; set; }
         public string Username { get; set; }
@@ -113,6 +112,7 @@ namespace CourseProject
     }
     class Employee : User
     {
+
         public Employee() { }
         public string AdvertisementName { get; set; }
         public string CompanyName { get; set; }
@@ -161,7 +161,7 @@ namespace CourseProject
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("_____________________________________\n");
-            Console.WriteLine($"Adversitement name - > {AdvertisementName}");            
+            Console.WriteLine($"Adversitement name - > {AdvertisementName}");
             Console.WriteLine("_____________________________________\n");
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine($"Company name - > {CompanyName}");
@@ -284,7 +284,7 @@ namespace CourseProject
             Console.WriteLine("Programmer 1" + "Journalist 2" + "IT Specialist 3" + "Doctor 4" + "Translater 5");
             categorys = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Experience year__");
-            Console.WriteLine("Less than 1 [1]"+"From 1 until 3 years [2]"+ "From 1 until 3 years[3]"+
+            Console.WriteLine("Less than 1 [1]" + "From 1 until 3 years [2]" + "From 1 until 3 years[3]" +
                 "More than 5 years[4]");
             excategory = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Education__");
@@ -330,6 +330,25 @@ namespace CourseProject
             str = new string(vs);
             return str;
         }
+        public bool UsernameIsExist(string name)
+        {
+            var item = users.SingleOrDefault(x => x.Username == name);
+            if (item != null)
+            {
+                return true;
+            }
+            return false;
+        }
+        public bool MailIsExist(string mail)
+        {
+            var item = users.SingleOrDefault(x => x.Email == mail);
+            if (item != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public User UserRegistriation()
         {
             string username, mail, status, password, checkpassword;
@@ -338,15 +357,22 @@ namespace CourseProject
             {
                 Console.Write("Username - >");
                 username = Console.ReadLine();
+                //and check exist or not
                 if (!CheckUsername(username))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("You have to write at least one \"Uppercase\" letter");
+                    Console.WriteLine("You have to write at least one \"Uppercase\" letter");//deyish sozleri
                     Console.ForegroundColor = ConsoleColor.Blue;
                 }
-            } while (!CheckUsername(username));
+                if (UsernameIsExist(username))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"{username} is already exist");
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                }
+            } while (!(CheckUsername(username)) || (UsernameIsExist(username)));
             do
-            {
+            { //and check exist or not
                 Console.Write("Password - >");
                 password = Console.ReadLine();
                 if (!CheckPassword(password))
@@ -369,7 +395,7 @@ namespace CourseProject
                 }
             } while (checkpassword != password);
             do
-            {
+            { //and check exist or not
                 Console.Write("Mail - >");
                 mail = Console.ReadLine();
                 if (!CheckMail(mail))
@@ -378,7 +404,13 @@ namespace CourseProject
                     Console.WriteLine("Please write correct your mail");
                     Console.ForegroundColor = ConsoleColor.Blue;
                 }
-            } while (!CheckMail(mail));
+                if (MailIsExist(mail))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"{mail} is already exist");
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                }
+            } while (!CheckMail(mail) || MailIsExist(mail));
             do
             {
                 Console.Write("Status - > Worker or Employee (only these)");
@@ -402,16 +434,15 @@ namespace CourseProject
             } while (codecheck != code);
             return new User(mail, username, newstatus, password);
         }
-        //public bool CheckPhoneNumber(string phonenumber)//it is not ready 
-        //{
-        //    Regex regex = new Regex(@"");
-        //    if (regex.IsMatch(phonenumber))
-        //    {
-        //        Console.WriteLine("Yes");return true;
-        //    }
-        //    Console.WriteLine("No");
-        //    return false;
-        //}
+        public bool CheckPhoneNumber(string phonenumber)//it is not ready 
+        {
+            Regex regex = new Regex(@"^\+994(50|51|55|70|77)([0-9]){7}$");
+            if (regex.IsMatch(phonenumber))
+            {
+                return true;
+            }
+            return false;
+        }
         public bool CheckStatus(string status)
         {
             var newstring = status.ToLower();
@@ -446,9 +477,22 @@ namespace CourseProject
             Console.WriteLine("Medium (1)" + "Uncompleted high degree (2)" + "High degree (3)");
             education = Convert.ToInt32(Console.ReadLine());
             Console.Write("City - >"); city = Console.ReadLine();
-            Console.Write("Minimum salary - >"); salary = Convert.ToDecimal(Console.ReadLine());
-            Console.WriteLine("PhoneNumber - >");
-            phonenumber = Console.ReadLine();////is not ready this part
+            do
+            {
+                Console.Write("Minimum salary - >");
+                salary = Convert.ToDecimal(Console.ReadLine());
+            } while (salary < 0);
+            do
+            {
+                Console.WriteLine("PhoneNumber - >");
+                phonenumber = Console.ReadLine();
+                if (!CheckPhoneNumber(phonenumber))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"Please write phonenumber correct (for example 0556556565");
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                }
+            } while (!CheckPhoneNumber(phonenumber));
             return new Employee(advname, companyname, categorys, information, city, salary, minAge, education, experience, phonenumber, user);
         }
         public bool CheckMail(string mail)
@@ -495,7 +539,7 @@ namespace CourseProject
         public int Run()
         {
             Console.ForegroundColor = ConsoleColor.Blue;
-            User newuser; Worker worker = new Worker(); Employee employee;            
+            User newuser; Worker worker = new Worker(); Employee employee;
             Console.Write("\t\t\t\tSIGN IN (1) SIGN UP (2) Exit (3)");
             int selection = Convert.ToInt32(Console.ReadLine());
             Console.Clear();
@@ -512,18 +556,18 @@ namespace CourseProject
                         Console.Write("Select - > "); select1 = Convert.ToInt32(Console.ReadLine());
                         if (select1 == 1)
                         {
-                           
+
                             worker = WorkerRegistriation(usernew);
                             workerlist.Add(worker);
                             SerializerToJasonWorkers();
                         }
                         else if (select1 == 2)
-                        {                            
+                        {
                             Console.WriteLine("");
                         }
                         else if (select1 == 3)
                         {
-                            var workercv = workerlist.SingleOrDefault(x=>x.Username==usernew.Username);
+                            var workercv = workerlist.SingleOrDefault(x => x.Username == usernew.Username);
                             workercv.ShowWorker();
                         }
                         else if (select1 == 4)
@@ -603,7 +647,7 @@ namespace CourseProject
                             for (int i = 0; i < workerlist[0].Categories.Count; i++)
                             {
                                 Console.Write($" {workerlist[0].Categories[i]} [{i}]");
-                            }                                                          
+                            }
                             Console.WriteLine(); Console.WriteLine("Write specialty number");
                             int selectspeciality = Convert.ToInt32(Console.ReadLine());
                             var collections = employeelist.Where(x => x.Categories[selectspeciality] == x.SpecialityCategory);
@@ -640,7 +684,7 @@ namespace CourseProject
         }
         public User SignIn()
         {
-            bool check;User myuser;
+            bool check; User myuser;
             do
             {
                 Console.Write("Username - >");
