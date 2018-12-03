@@ -186,7 +186,7 @@ namespace CourseProject
     }
     class Controller
     {
-        List<Worker> workerlist = new List<Worker>();
+        List<Worker> workerlist = new List<Worker>();Worker testworker = new Worker();Employee testemployee = new Employee();
         List<Employee> employeelist = new List<Employee>();
         List<User> users = new List<User>();
         JsonSerializer json = new JsonSerializer();
@@ -281,32 +281,44 @@ namespace CourseProject
                 Console.Write("Gender(male,female)"); gender = Console.ReadLine();
             } while (!(gender == "male" || gender == "female"));
             Console.WriteLine("Speciality__");
-            //Console.WriteLine("Programmer 1" + "Journalist 2" + "IT Specialist 3" + "Doctor 4" + "Translater 5");
-            for (int i = 0; i < workerlist[0].Categories.Count; i++)
+            for (int i = 0; i < testworker.Categories.Count; i++)
             {
-                Console.Write($" {workerlist[0].Categories[i]} [{i + 1}]");
+                Console.Write($" {testworker.Categories[i]} [{i + 1}]");
             }
             Console.WriteLine();
             categorys = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Experience year__");
-            // Console.WriteLine("Less than 1 [1]" + "From 1 until 3 years [2]" + "From 1 until 3 years[3]" +
-            //   "More than 5 years[4]");
-            for (int i = 0; i < workerlist[0].Experience.Count; i++)
+            for (int i = 0; i < testworker.Experience.Count; i++)
             {
-                Console.Write($" {workerlist[0].Experience[i]} [{i + 1}]");
+                Console.Write($" {testworker.Experience[i]} [{i + 1}]");
             }
             excategory = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Education__");
-            //Console.WriteLine("Medium (1)" + "Uncompleted high degree (2)" + "high degree (3)");
-            for (int i = 0; i < workerlist[0].EducationCategories.Count; i++)
+            for (int i = 0; i < testworker.EducationCategories.Count; i++)
             {
-                Console.Write($" {workerlist[0].EducationCategories[i]} [{i + 1}]");
+                Console.Write($" {testworker.EducationCategories[i]} [{i + 1}]");
             }
             educategory = Convert.ToInt32(Console.ReadLine());
             Console.Write("City - >"); city = Console.ReadLine();
             Console.Write("Minimum salary - >"); minsalary = Convert.ToDecimal(Console.ReadLine());
-            Console.WriteLine("PhoneNumber - >");
-            phonenumber = Console.ReadLine();////is not ready this part
+            do
+            {
+                Console.WriteLine("PhoneNumber - >");
+                phonenumber = Console.ReadLine();
+                if (PhonenumberIsExist(phonenumber))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"{phonenumber} is already exist");
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                }
+                if (!CheckPhoneNumber(phonenumber))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Please write correct you phone number (for example +994 51 584 87 62)");
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                }
+            } while (PhonenumberIsExist(phonenumber)||!CheckPhoneNumber(phonenumber));
+
             return new Worker(name, surname, age, gender, categorys, excategory, educategory, city,
                 minsalary, phonenumber, user);
         }
@@ -361,7 +373,15 @@ namespace CourseProject
             }
             return false;
         }
-
+        public bool PhonenumberIsExist(string phonenumber)
+        {
+            var item = workerlist.SingleOrDefault(x => x.PhoneNumber == phonenumber);
+            if (item != null)
+            {
+                return true;
+            }
+            return false;
+        }
         public User UserRegistriation()
         {
             string username, mail, status, password, checkpassword;
