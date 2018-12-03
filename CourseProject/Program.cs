@@ -161,7 +161,6 @@ namespace CourseProject
             Console.WriteLine("_____________________________________\n");
             Console.WriteLine($"Adversitement name - > {AdvertisementName}");
             Console.WriteLine("_____________________________________\n");
-            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine($"Company name - > {CompanyName}");
             Console.WriteLine("_____________________________________\n");
             Console.WriteLine($"Speciality - > {SpecialityCategory}");
@@ -307,13 +306,13 @@ namespace CourseProject
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"{phonenumber} is already exist");
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.Green;
                 }
                 if (!CheckPhoneNumber(phonenumber))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Please write correct you phone number (for example +994 51 584 87 62)");
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.Green;
                 }
             } while (PhonenumberIsExist(phonenumber) || !CheckPhoneNumber(phonenumber));
 
@@ -394,13 +393,13 @@ namespace CourseProject
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("You have to write at least one \"Uppercase\" letter and at least 9 symbols");
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.Green;
                 }
                 if (UsernameIsExist(username))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"{username} is already exist");
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.Green;
                 }
             } while (!(CheckUsername(username)) || (UsernameIsExist(username)));
             do
@@ -412,7 +411,7 @@ namespace CourseProject
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("You have to write at least one \"Uppercase\" letter" +
                         "one symbol or number");
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.Green;
                 }
             } while (!CheckPassword(password));
             do
@@ -423,7 +422,7 @@ namespace CourseProject
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Please write correct your password");
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.Green;
                 }
             } while (checkpassword != password);
             do
@@ -434,13 +433,13 @@ namespace CourseProject
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Please write correct your mail");
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.Green;
                 }
                 if (MailIsExist(mail))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"{mail} is already exist");
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.Green;
                 }
             } while (!CheckMail(mail) || MailIsExist(mail));
             do
@@ -452,7 +451,7 @@ namespace CourseProject
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Your status can be only \"worker\" or \"employee\"");
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.Green;
                 }
             } while (!CheckStatus(status));
             //password = ToHidePassword(password);
@@ -528,13 +527,13 @@ namespace CourseProject
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"{phonenumber} is already exist");
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.Green;
                 }
                 if (!CheckPhoneNumber(phonenumber))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Please write correct you phone number (for example +994 51 584 87 62)");
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.Green;
                 }
             } while (PhonenumberIsExist(phonenumber) || !CheckPhoneNumber(phonenumber));
 
@@ -905,7 +904,7 @@ namespace CourseProject
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Your username or password is not correct");
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.Green;
                 }
             } while (!check);
             return myuser;
@@ -915,7 +914,7 @@ namespace CourseProject
     {
         static void ShowInterfaceOfProgram()
         {
-            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("\t================================================================");
             Console.WriteLine("\t||                                                            ||");
             Console.WriteLine("\t||                    ADVERTISEMENT SITE                      ||");
