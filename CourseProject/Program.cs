@@ -574,7 +574,7 @@ namespace CourseProject
         public List<Employee> FindSimilarAdvertisement(Worker worker)
         {
             var advcollections = employeelist.Where(x => x.Salary >= worker.MinSalary && x.SpecialityCategory == worker.SpecialityCategory
-            &&x.City==worker.City).ToList();
+            && x.City == worker.City).ToList();
             return advcollections;////////////////
         }
         public int Run()
@@ -605,7 +605,7 @@ namespace CourseProject
                         else if (select1 == 2)
                         {
                             var workercv1 = workerlist.SingleOrDefault(x => x.Username == usernew.Username);
-                            var collection=FindSimilarAdvertisement(workercv1);
+                            var collection = FindSimilarAdvertisement(workercv1);
                             foreach (var item in collection)
                             {
                                 item.ShowEmployeeAdversitement();
@@ -640,7 +640,36 @@ namespace CourseProject
                         }
                         else if (select1 == 5)
                         {
-                            //Search with category
+                            var workercv = workerlist.SingleOrDefault(x => x.Username == usernew.Username);
+                            List<Employee> collection=new List<Employee>();
+                            Console.WriteLine();
+                            Console.WriteLine("Speciality Category [1] Education [2] City [3] Salary [4] WorkExperience [5]");
+                            int selectspeciality = Convert.ToInt32(Console.ReadLine());
+                            if (selectspeciality == 1)
+                            {
+                                collection = employeelist.Where(x => x.SpecialityCategory == workercv.SpecialityCategory).ToList();
+                            }
+                            else if (selectspeciality == 2)
+                            {
+                                collection = employeelist.Where(x => x.Education == workercv.Education).ToList();
+                            }
+                            else if (selectspeciality == 3)
+                            {
+                                collection = employeelist.Where(x => x.City == workercv.City).ToList();
+                            }
+                            else if (selectspeciality == 4)
+                            {
+                                collection = employeelist.Where(x => x.Salary >= workercv.MinSalary).ToList();
+                            }
+                            else if (selectspeciality == 5)
+                            {
+                                collection = employeelist.Where(x => x.Experience == workercv.ExperienceCategory).ToList();
+                            }
+                            foreach (var item in collection)
+                            {
+                                item.ShowEmployeeAdversitement();
+                            }
+
                         }
                         else if (select1 == 6)
                         {
