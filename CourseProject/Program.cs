@@ -112,7 +112,6 @@ namespace CourseProject
     }
     class Employee : User
     {
-
         public Employee() { }
         public string AdvertisementName { get; set; }
         public string CompanyName { get; set; }
@@ -375,6 +374,8 @@ namespace CourseProject
         public bool PhonenumberIsExist(string phonenumber)
         {
             var item = workerlist.SingleOrDefault(x => x.PhoneNumber == phonenumber);
+            var item2 = employeelist.SingleOrDefault(x => x.PhoneNumber == phonenumber);
+            //check in employee
             if (item != null)
             {
                 return true;
@@ -392,7 +393,7 @@ namespace CourseProject
                 if (!CheckUsername(username))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("You have to write at least one \"Uppercase\" letter");//deyish sozleri
+                    Console.WriteLine("You have to write at least one \"Uppercase\" letter and at least 9 symbols");
                     Console.ForegroundColor = ConsoleColor.Blue;
                 }
                 if (UsernameIsExist(username))
@@ -781,9 +782,7 @@ namespace CourseProject
     class Program
     {
         static void Main(string[] args)
-        {
-            ConsoleKeyInfo key = new ConsoleKeyInfo();
-            
+        {                   
             while (true)
             {
                 Controller controller = new Controller();
