@@ -116,7 +116,6 @@ namespace CourseProject
         public Employee() { }
         public string AdvertisementName { get; set; }
         public string CompanyName { get; set; }
-        //change name
         public string SpecialityCategory { get; set; }
         public string InformationAboutWork { get; set; }
         public string City { get; set; }
@@ -389,8 +388,7 @@ namespace CourseProject
             do
             {
                 Console.Write("Username - >");
-                username = Console.ReadLine();
-                //and check exist or not
+                username = Console.ReadLine();                
                 if (!CheckUsername(username))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -405,7 +403,7 @@ namespace CourseProject
                 }
             } while (!(CheckUsername(username)) || (UsernameIsExist(username)));
             do
-            { //and check exist or not
+            {
                 Console.Write("Password - >");
                 password = Console.ReadLine();
                 if (!CheckPassword(password))
@@ -428,7 +426,7 @@ namespace CourseProject
                 }
             } while (checkpassword != password);
             do
-            { //and check exist or not
+            { 
                 Console.Write("Mail - >");
                 mail = Console.ReadLine();
                 if (!CheckMail(mail))
@@ -467,7 +465,7 @@ namespace CourseProject
             } while (codecheck != code);
             return new User(mail, username, newstatus, password);
         }
-        public bool CheckPhoneNumber(string phonenumber)//it is not ready 
+        public bool CheckPhoneNumber(string phonenumber)
         {
             Regex regex = new Regex(@"^\+994(50|51|55|70|77)([0-9]){7}$");
             if (regex.IsMatch(phonenumber))
@@ -488,7 +486,7 @@ namespace CourseProject
         public Employee EmployeeRegistriation(User user)
         {
             string advname, companyname, information, city, phonenumber; decimal salary;
-            int categorys, minAge, education, experience;//realize delete defoult value
+            int categorys, minAge, education, experience;
             Console.Write("Advertisement name - >");
             advname = Console.ReadLine();
             Console.Write("Company name - >");
@@ -557,7 +555,7 @@ namespace CourseProject
             {
                 return true;
             }
-            return false;//test
+            return false;
         }
         public bool CheckPassword(string password)
         {
@@ -570,7 +568,7 @@ namespace CourseProject
             {
                 return true;
             }
-            return false;//test
+            return false;
         }
         public void ShowInterfaceOfProgram()
         {
@@ -694,7 +692,7 @@ namespace CourseProject
             else if (selection == 2)
             {   //SIGN UP
                 int select;
-                newuser = UserRegistriation();//you have to add to list
+                newuser = UserRegistriation();
                 users.Add(newuser);
                 SerializerToJasonUsers();
                 if (newuser.Status == "worker")
@@ -784,6 +782,8 @@ namespace CourseProject
     {
         static void Main(string[] args)
         {
+            ConsoleKeyInfo key = new ConsoleKeyInfo();
+            
             while (true)
             {
                 Controller controller = new Controller();
