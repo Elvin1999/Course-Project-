@@ -577,11 +577,20 @@ namespace CourseProject
             && x.City == worker.City).ToList();
             return advcollections;////////////////
         }
+
         public int Run()
         {
-            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.SetCursorPosition(20, 10);
             User newuser; Worker worker = new Worker(); Employee employee;
-            Console.Write("\t\t\t\tSIGN IN (1) SIGN UP (2) Exit (3)");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.Green;
+            Console.WriteLine("\t                                   ");
+            Console.SetCursorPosition(20, 11);
+            Console.WriteLine("\tSIGN IN [1] SIGN UP [2] Exit [3]   ");
+            Console.SetCursorPosition(20, 12);
+            Console.WriteLine("\t                                   ");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Green;
             int selection = Convert.ToInt32(Console.ReadLine());
             Console.Clear();
             if (selection == 1)
