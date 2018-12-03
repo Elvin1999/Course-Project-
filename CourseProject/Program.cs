@@ -186,7 +186,7 @@ namespace CourseProject
     }
     class Controller
     {
-        List<Worker> workerlist = new List<Worker>();Worker testworker = new Worker();Employee testemployee = new Employee();
+        List<Worker> workerlist = new List<Worker>(); Worker testworker = new Worker(); Employee testemployee = new Employee();
         List<Employee> employeelist = new List<Employee>();
         List<User> users = new List<User>();
         JsonSerializer json = new JsonSerializer();
@@ -317,7 +317,7 @@ namespace CourseProject
                     Console.WriteLine("Please write correct you phone number (for example +994 51 584 87 62)");
                     Console.ForegroundColor = ConsoleColor.Blue;
                 }
-            } while (PhonenumberIsExist(phonenumber)||!CheckPhoneNumber(phonenumber));
+            } while (PhonenumberIsExist(phonenumber) || !CheckPhoneNumber(phonenumber));
 
             return new Worker(name, surname, age, gender, categorys, excategory, educategory, city,
                 minsalary, phonenumber, user);
@@ -493,21 +493,27 @@ namespace CourseProject
             advname = Console.ReadLine();
             Console.Write("Company name - >");
             companyname = Console.ReadLine();
-            Console.WriteLine("Speciality__");//replace dynamic (for)
-            Console.WriteLine("Programmer 1" + "Journalist 2" + "IT Specialist 3" + "Doctor 4" + "Translater 5");
+            Console.WriteLine("Speciality__");
+            for (int i = 0; i < testemployee.Categories.Count; i++)
+            {
+                Console.Write($" {testemployee.Categories[i]} [{i + 1}]");
+            }
             categorys = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Age - >");
             minAge = Convert.ToInt32(Console.ReadLine());
             Console.Write("Information about work - >");
             information = Console.ReadLine();
-            Console.WriteLine("Experience year__");//replace dynamic (for)
-            Console.WriteLine("Less than 1 year select (1)\n" +
-             "From 1 until 3 years select (2)\n" +
-             "From 3 until 5 years select (3)\n" +
-             "More than 5 years select (4)");
+            Console.WriteLine("Experience year__");
+            for (int i = 0; i < testemployee.ExperienceCategory.Count; i++)
+            {
+                Console.Write($" {testemployee.ExperienceCategory[i]} [{i + 1}]");
+            }
             experience = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Education__");//replace dynamic (for)
-            Console.WriteLine("Medium (1)" + "Uncompleted high degree (2)" + "High degree (3)");
+            Console.WriteLine("Education__");
+            for (int i = 0; i < testemployee.EducationCategories.Count; i++)
+            {
+                Console.Write($" {testemployee.EducationCategories[i]} [{i + 1}]");
+            }
             education = Convert.ToInt32(Console.ReadLine());
             Console.Write("City - >"); city = Console.ReadLine();
             do
@@ -519,14 +525,20 @@ namespace CourseProject
             {
                 Console.WriteLine("PhoneNumber - >");
                 phonenumber = Console.ReadLine();
+                if (PhonenumberIsExist(phonenumber))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"{phonenumber} is already exist");
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                }
                 if (!CheckPhoneNumber(phonenumber))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"Please write phonenumber correct (for example 0556556565)");
+                    Console.WriteLine("Please write correct you phone number (for example +994 51 584 87 62)");
                     Console.ForegroundColor = ConsoleColor.Blue;
                 }
+            } while (PhonenumberIsExist(phonenumber) || !CheckPhoneNumber(phonenumber));
 
-            } while (!CheckPhoneNumber(phonenumber));
             return new Employee(advname, companyname, categorys, information, city, salary, minAge, education, experience, phonenumber, user);
         }
         public bool CheckMail(string mail)
@@ -644,19 +656,38 @@ namespace CourseProject
                 }
                 else if (usernew.Status == "employee")
                 {
-                    Console.Clear();
-                    var workercv = employeelist.SingleOrDefault(x => x.Username == usernew.Username);
-                    Console.WriteLine("_______________________________________\n");
-                    Console.WriteLine("__________YOUR_ADVERTISEMENT___________");
-                    Console.WriteLine("_______________________________________\n");
-                    if (workercv != null)
+                    while (true)
                     {
-                        workercv.ShowEmployeeAdversitement();
-                    }
 
-                    Console.WriteLine("LOG OUT select 5");
-                    int choose = Convert.ToInt32(Console.ReadLine());
-                    if (choose == 5) return 1;
+
+                        Console.Clear();
+                        Console.WriteLine("Create your Adversitement [1] Show your Adversitements [2] LOG OUT select 5");
+                        Console.WriteLine("LOG OUT select [5]");
+                 
+                        int choose = Convert.ToInt32(Console.ReadLine());
+                        var workercv = employeelist.SingleOrDefault(x => x.Username == usernew.Username);
+                        if (choose == 2)
+                        {
+                            Console.WriteLine("_______________________________________\n");
+                            Console.WriteLine("__________YOUR_ADVERTISEMENT___________");
+                            Console.WriteLine("_______________________________________\n");
+                            if(workercv!=null)
+                            workercv.ShowEmployeeAdversitement();
+                        }
+                        else if (choose == 1)
+                        {
+                            employee = EmployeeRegistriation(usernew);
+                            employeelist.Add(employee);
+                            SerializerToJasonEmployee();
+                        }
+                        else if (choose == 5) return 1;
+                        Console.WriteLine("Back to Worker Menu select [0]");
+                        int select2 = Convert.ToInt32(Console.ReadLine());
+                        if (select2 == 0)
+                        {
+                            continue;
+                        }
+                    }
                 }
 
             }
