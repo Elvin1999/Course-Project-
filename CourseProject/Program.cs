@@ -615,10 +615,14 @@ namespace CourseProject
                         {
                             var workercv1 = workerlist.SingleOrDefault(x => x.Username == usernew.Username);
                             var collection = FindSimilarAdvertisement(workercv1);
-                            foreach (var item in collection)
+                            if (collection != null)
                             {
-                                item.ShowEmployeeAdversitement();
+                                foreach (var item in collection)
+                                {
+                                    item.ShowEmployeeAdversitement();
+                                }
                             }
+
                         }
                         else if (select1 == 3)
                         {
@@ -642,15 +646,19 @@ namespace CourseProject
                             Console.WriteLine(); Console.WriteLine("Write specialty number");
                             int selectspeciality = Convert.ToInt32(Console.ReadLine());
                             var collections = employeelist.Where(x => x.Categories[selectspeciality] == x.SpecialityCategory);
-                            foreach (var item in collections)
+                            if (collections != null)
                             {
-                                item.ShowEmployeeAdversitement();
+                                foreach (var item in collections)
+                                {
+                                    item.ShowEmployeeAdversitement();
+                                }
                             }
+
                         }
                         else if (select1 == 5)
                         {
                             var workercv = workerlist.SingleOrDefault(x => x.Username == usernew.Username);
-                            List<Employee> collection=new List<Employee>();
+                            List<Employee> collection = new List<Employee>();
                             Console.WriteLine();
                             Console.WriteLine("Speciality Category [1] Education [2] City [3] Salary [4] WorkExperience [5]");
                             int selectspeciality = Convert.ToInt32(Console.ReadLine());
@@ -674,10 +682,14 @@ namespace CourseProject
                             {
                                 collection = employeelist.Where(x => x.Experience == workercv.ExperienceCategory).ToList();
                             }
-                            foreach (var item in collection)
+                            if (collection != null)
                             {
-                                item.ShowEmployeeAdversitement();
+                                foreach (var item in collection)
+                                {
+                                    item.ShowEmployeeAdversitement();
+                                }
                             }
+
 
                         }
                         else if (select1 == 6)
@@ -696,8 +708,6 @@ namespace CourseProject
                 {
                     while (true)
                     {
-
-
                         Console.Clear();
                         Console.WriteLine("Create your Adversitement [1] Show your Adversitements [2] LOG OUT select 5");
                         Console.WriteLine("LOG OUT select [5]");
@@ -731,7 +741,6 @@ namespace CourseProject
             }
             else if (selection == 2)
             {   //SIGN UP
-                int select;
                 newuser = UserRegistriation();
                 users.Add(newuser);
                 SerializerToJasonUsers();
@@ -741,23 +750,42 @@ namespace CourseProject
                     {
                         Console.Clear();
                         Console.WriteLine("Create your CV [1]\nSearch Job [2]\n Show your CV [3]\nShow all adversitement [4]" +
-                            "\nLog Out [5]");
-                        Console.Write("Select - > "); select = Convert.ToInt32(Console.ReadLine());
-                        if (select == 1)
+                            " Search Job with category [5]\nLog Out [6]");
+                        Console.Write("Select - > "); int select1 = Convert.ToInt32(Console.ReadLine());
+                        if (select1 == 1)
                         {
+
                             worker = WorkerRegistriation(newuser);
                             workerlist.Add(worker);
                             SerializerToJasonWorkers();
                         }
-                        else if (select == 2)
+                        else if (select1 == 2)
                         {
-                            Console.WriteLine("");
+                            var workercv1 = workerlist.SingleOrDefault(x => x.Username == newuser.Username);
+                            var collection = FindSimilarAdvertisement(workercv1);
+                            if (collection != null)
+                            {
+                                foreach (var item in collection)
+                                {
+                                    item.ShowEmployeeAdversitement();
+                                }
+                            }
+
                         }
-                        else if (select == 3)
+                        else if (select1 == 3)
                         {
-                            worker.ShowWorker();
+                            var workercv = workerlist.SingleOrDefault(x => x.Username == newuser.Username);
+                            if (workercv == null)
+                            {
+                                Console.WriteLine("You do not have cv form please create your CV");
+                            }
+                            else
+                            {
+                                workercv.ShowWorker();
+                            }
+
                         }
-                        else if (select == 4)
+                        else if (select1 == 4)
                         {
                             for (int i = 0; i < worker.Categories.Count; i++)
                             {
@@ -766,18 +794,57 @@ namespace CourseProject
                             Console.WriteLine(); Console.WriteLine("Write specialty number");
                             int selectspeciality = Convert.ToInt32(Console.ReadLine());
                             var collections = employeelist.Where(x => x.Categories[selectspeciality] == x.SpecialityCategory);
-                            foreach (var item in collections)
+                            if (collections != null)
                             {
-                                item.ShowEmployeeAdversitement();
+                                foreach (var item in collections)
+                                {
+                                    item.ShowEmployeeAdversitement();
+                                }
                             }
                         }
-                        else if (select == 5)
+                        else if (select1 == 5)
+                        {
+                            var workercv = workerlist.SingleOrDefault(x => x.Username == newuser.Username);
+                            List<Employee> collection = new List<Employee>();
+                            Console.WriteLine();
+                            Console.WriteLine("Speciality Category [1] Education [2] City [3] Salary [4] WorkExperience [5]");
+                            int selectspeciality = Convert.ToInt32(Console.ReadLine());
+                            if (selectspeciality == 1)
+                            {
+                                collection = employeelist.Where(x => x.SpecialityCategory == workercv.SpecialityCategory).ToList();
+                            }
+                            else if (selectspeciality == 2)
+                            {
+                                collection = employeelist.Where(x => x.Education == workercv.Education).ToList();
+                            }
+                            else if (selectspeciality == 3)
+                            {
+                                collection = employeelist.Where(x => x.City == workercv.City).ToList();
+                            }
+                            else if (selectspeciality == 4)
+                            {
+                                collection = employeelist.Where(x => x.Salary >= workercv.MinSalary).ToList();
+                            }
+                            else if (selectspeciality == 5)
+                            {
+                                collection = employeelist.Where(x => x.Experience == workercv.ExperienceCategory).ToList();
+                            }
+                            if (collection != null)
+                            {
+                                foreach (var item in collection)
+                                {
+                                    item.ShowEmployeeAdversitement();
+                                }
+                            }
+
+                        }
+                        else if (select1 == 6)
                         {
                             return 1;
                         }
                         Console.WriteLine("Back to Worker Menu select [0]");
-                        select = Convert.ToInt32(Console.ReadLine());
-                        if (select == 0)
+                        select1 = Convert.ToInt32(Console.ReadLine());
+                        if (select1 == 0)
                         {
                             continue;
                         }
@@ -785,10 +852,36 @@ namespace CourseProject
                 }
                 else if (newuser.Status == "employee")
                 {
-                    employee = EmployeeRegistriation(newuser);
-                    Console.Clear();
-                    employeelist.Add(employee);
-                    SerializerToJasonEmployee();
+                    while (true)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Create your Adversitement [1] Show your Adversitements [2] LOG OUT select 5");
+                        Console.WriteLine("LOG OUT select [5]");
+
+                        int choose = Convert.ToInt32(Console.ReadLine());
+                        var workercv = employeelist.SingleOrDefault(x => x.Username == newuser.Username);
+                        if (choose == 2)
+                        {
+                            Console.WriteLine("_______________________________________\n");
+                            Console.WriteLine("__________YOUR_ADVERTISEMENT___________");
+                            Console.WriteLine("_______________________________________\n");
+                            if (workercv != null)
+                                workercv.ShowEmployeeAdversitement();
+                        }
+                        else if (choose == 1)
+                        {
+                            employee = EmployeeRegistriation(newuser);
+                            employeelist.Add(employee);
+                            SerializerToJasonEmployee();
+                        }
+                        else if (choose == 5) return 1;
+                        Console.WriteLine("Back to Worker Menu select [0]");
+                        int select2 = Convert.ToInt32(Console.ReadLine());
+                        if (select2 == 0)
+                        {
+                            continue;
+                        }
+                    }
                 }
             }
             else if (selection == 3)
