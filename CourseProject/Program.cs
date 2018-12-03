@@ -376,7 +376,7 @@ namespace CourseProject
             var item = workerlist.SingleOrDefault(x => x.PhoneNumber == phonenumber);
             var item2 = employeelist.SingleOrDefault(x => x.PhoneNumber == phonenumber);
             //check in employee
-            if (item != null)
+            if (item != null||item2!=null)
             {
                 return true;
             }
@@ -625,9 +625,9 @@ namespace CourseProject
                         }
                         else if (select1 == 4)
                         {
-                            for (int i = 0; i < workerlist[0].Categories.Count; i++)
+                            for (int i = 0; i < worker.Categories.Count; i++)
                             {
-                                Console.Write($" {workerlist[0].Categories[i]} [{i}]");
+                                Console.Write($" {worker.Categories[i]} [{i}]");
                             }
                             Console.WriteLine(); Console.WriteLine("Write specialty number");
                             int selectspeciality = Convert.ToInt32(Console.ReadLine());
@@ -720,9 +720,9 @@ namespace CourseProject
                         }
                         else if (select == 4)
                         {
-                            for (int i = 0; i < workerlist[0].Categories.Count; i++)
+                            for (int i = 0; i < worker.Categories.Count; i++)
                             {
-                                Console.Write($" {workerlist[0].Categories[i]} [{i}]");
+                                Console.Write($" {worker.Categories[i]} [{i}]");
                             }
                             Console.WriteLine(); Console.WriteLine("Write specialty number");
                             int selectspeciality = Convert.ToInt32(Console.ReadLine());
