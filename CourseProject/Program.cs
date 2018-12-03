@@ -376,12 +376,12 @@ namespace CourseProject
             var item = workerlist.SingleOrDefault(x => x.PhoneNumber == phonenumber);
             var item2 = employeelist.SingleOrDefault(x => x.PhoneNumber == phonenumber);
             //check in employee
-            if (item != null||item2!=null)
+            if (item != null || item2 != null)
             {
                 return true;
             }
             return false;
-        } 
+        }
         public User UserRegistriation()
         {
             string username, mail, status, password, checkpassword;
@@ -389,7 +389,7 @@ namespace CourseProject
             do
             {
                 Console.Write("Username - >");
-                username = Console.ReadLine();                
+                username = Console.ReadLine();
                 if (!CheckUsername(username))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -427,7 +427,7 @@ namespace CourseProject
                 }
             } while (checkpassword != password);
             do
-            { 
+            {
                 Console.Write("Mail - >");
                 mail = Console.ReadLine();
                 if (!CheckMail(mail))
@@ -571,15 +571,11 @@ namespace CourseProject
             }
             return false;
         }
-        public void ShowInterfaceOfProgram()
+        public List<Employee> FindSimilarAdvertisement(Worker worker)
         {
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine("\t\t\t=============================================================================");
-            Console.WriteLine("\t\t\t||                                                                         ||");
-            Console.WriteLine("\t\t\t||                        ADVERTISEMENT SITE                               ||");
-            Console.WriteLine("\t\t\t||                                                                         ||");
-            Console.WriteLine("\t\t\t=============================================================================");
-            Console.WriteLine();
+            var advcollections = employeelist.Where(x => x.Salary >= worker.MinSalary && x.SpecialityCategory == worker.SpecialityCategory
+            &&x.City==worker.City).ToList();
+            return advcollections;////////////////
         }
         public int Run()
         {
@@ -608,7 +604,12 @@ namespace CourseProject
                         }
                         else if (select1 == 2)
                         {
-                            Console.WriteLine("");//search job
+                            var workercv1 = workerlist.SingleOrDefault(x => x.Username == usernew.Username);
+                            var collection=FindSimilarAdvertisement(workercv1);
+                            foreach (var item in collection)
+                            {
+                                item.ShowEmployeeAdversitement();
+                            }
                         }
                         else if (select1 == 3)
                         {
@@ -662,7 +663,7 @@ namespace CourseProject
                         Console.Clear();
                         Console.WriteLine("Create your Adversitement [1] Show your Adversitements [2] LOG OUT select 5");
                         Console.WriteLine("LOG OUT select [5]");
-                 
+
                         int choose = Convert.ToInt32(Console.ReadLine());
                         var workercv = employeelist.SingleOrDefault(x => x.Username == usernew.Username);
                         if (choose == 2)
@@ -670,8 +671,8 @@ namespace CourseProject
                             Console.WriteLine("_______________________________________\n");
                             Console.WriteLine("__________YOUR_ADVERTISEMENT___________");
                             Console.WriteLine("_______________________________________\n");
-                            if(workercv!=null)
-                            workercv.ShowEmployeeAdversitement();
+                            if (workercv != null)
+                                workercv.ShowEmployeeAdversitement();
                         }
                         else if (choose == 1)
                         {
@@ -781,12 +782,24 @@ namespace CourseProject
     }
     class Program
     {
+        static void ShowInterfaceOfProgram()
+        {
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("\t================================================================");
+            Console.WriteLine("\t||                                                            ||");
+            Console.WriteLine("\t||                    ADVERTISEMENT SITE                      ||");
+            Console.WriteLine("\t||                                                            ||");
+            Console.WriteLine("\t================================================================");
+            Console.WriteLine();
+        }
         static void Main(string[] args)
-        {                   
+        {
+            ShowInterfaceOfProgram();
             while (true)
             {
                 Controller controller = new Controller();
                 var backtomenu = controller.Run();
+
                 if (backtomenu == 1)
                 {
                     Console.Clear();
