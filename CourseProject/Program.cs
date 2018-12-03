@@ -57,7 +57,7 @@ namespace CourseProject
         public List<string> Experience = new List<string>() {
              "Less than 1 years",
              "From 1 until 3 years",
-             "From 5 until 5 years",
+             "From 3 until 5 years",
              "More than 5 years"
         };
         [JsonIgnore]
@@ -112,6 +112,7 @@ namespace CourseProject
     }
     class Employee : User
     {
+        public List<string> AppUsername = new List<string>();
         public Employee() { }
         public string AdvertisementName { get; set; }
         public string CompanyName { get; set; }
@@ -127,7 +128,7 @@ namespace CourseProject
         public List<string> ExperienceCategory = new List<string>() {
             "Less than 1 years",
              "From 1 until 3 years",
-             "From 5 until 5 years",
+             "From 3 until 5 years",
              "More than 5 years"
         };
         [JsonIgnore]
@@ -183,7 +184,8 @@ namespace CourseProject
     }
     class Controller
     {
-        List<Worker> workerlist = new List<Worker>(); Worker testworker = new Worker(); Employee testemployee = new Employee();
+        List<Worker> workerlist = new List<Worker>(); Worker testworker = new Worker();
+        Employee testemployee = new Employee();
         List<Employee> employeelist = new List<Employee>();
         List<User> users = new List<User>();
         JsonSerializer json = new JsonSerializer();
@@ -374,7 +376,6 @@ namespace CourseProject
         {
             var item = workerlist.SingleOrDefault(x => x.PhoneNumber == phonenumber);
             var item2 = employeelist.SingleOrDefault(x => x.PhoneNumber == phonenumber);
-            //check in employee
             if (item != null || item2 != null)
             {
                 return true;
@@ -576,7 +577,20 @@ namespace CourseProject
             && x.City == worker.City).ToList();
             return advcollections;////////////////
         }
-
+        public void ApplyToJob(string phonenumber, User user)
+        {
+            var thiscompany = employeelist.SingleOrDefault(x => x.PhoneNumber == phonenumber);
+            thiscompany.AppUsername.Add(user.Username);
+            SerializerToJasonEmployee();
+        }
+        public void ShowApplyingToJob(Employee employee)
+        {
+            for (int i = 0; i < employee.AppUsername.Count; i++)
+            {
+                var worker = workerlist.SingleOrDefault(x => x.Username == employee.AppUsername[i]);
+                worker.ShowWorker();
+            }
+        }
         public int Run()
         {
             Console.SetCursorPosition(20, 10);
@@ -605,7 +619,6 @@ namespace CourseProject
                         Console.Write("Select - > "); select1 = Convert.ToInt32(Console.ReadLine());
                         if (select1 == 1)
                         {
-
                             worker = WorkerRegistriation(usernew);
                             workerlist.Add(worker);
                             SerializerToJasonWorkers();
@@ -620,6 +633,9 @@ namespace CourseProject
                                 {
                                     item.ShowEmployeeAdversitement();
                                 }
+                                Console.WriteLine("Write Company phonenumber for applying to company ");
+                                string companyphonenumber = Console.ReadLine();
+                                ApplyToJob(companyphonenumber, usernew);
                             }
 
                         }
@@ -652,7 +668,9 @@ namespace CourseProject
                                     item.ShowEmployeeAdversitement();
                                 }
                             }
-
+                            Console.WriteLine("Write Company phonenumber for applying to company ");
+                            string companyphonenumber = Console.ReadLine();
+                            ApplyToJob(companyphonenumber, usernew);
                         }
                         else if (select1 == 5)
                         {
@@ -688,8 +706,9 @@ namespace CourseProject
                                     item.ShowEmployeeAdversitement();
                                 }
                             }
-
-
+                            Console.WriteLine("Write Company phonenumber for applying to company ");
+                            string companyphonenumber = Console.ReadLine();
+                            ApplyToJob(companyphonenumber, usernew);
                         }
                         else if (select1 == 6)
                         {
@@ -712,14 +731,17 @@ namespace CourseProject
                         Console.WriteLine("LOG OUT select [5]");
 
                         int choose = Convert.ToInt32(Console.ReadLine());
-                        var workercv = employeelist.SingleOrDefault(x => x.Username == usernew.Username);
+                        var employercv = employeelist.SingleOrDefault(x => x.Username == usernew.Username);
                         if (choose == 2)
                         {
                             Console.WriteLine("_______________________________________\n");
                             Console.WriteLine("__________YOUR_ADVERTISEMENT___________");
                             Console.WriteLine("_______________________________________\n");
-                            if (workercv != null)
-                                workercv.ShowEmployeeAdversitement();
+                            if (employercv != null)
+                            {
+                                employercv.ShowEmployeeAdversitement();
+                                ShowApplyingToJob(employercv);
+                            }
                         }
                         else if (choose == 1)
                         {
@@ -768,6 +790,9 @@ namespace CourseProject
                                 {
                                     item.ShowEmployeeAdversitement();
                                 }
+                                Console.WriteLine("Write Company phonenumber for applying to company ");
+                                string companyphonenumber = Console.ReadLine();
+                                ApplyToJob(companyphonenumber, newuser);
                             }
 
                         }
@@ -799,6 +824,9 @@ namespace CourseProject
                                 {
                                     item.ShowEmployeeAdversitement();
                                 }
+                                Console.WriteLine("Write Company phonenumber for applying to company ");
+                                string companyphonenumber = Console.ReadLine();
+                                ApplyToJob(companyphonenumber, newuser);
                             }
                         }
                         else if (select1 == 5)
@@ -834,6 +862,9 @@ namespace CourseProject
                                 {
                                     item.ShowEmployeeAdversitement();
                                 }
+                                Console.WriteLine("Write Company phonenumber for applying to company ");
+                                string companyphonenumber = Console.ReadLine();
+                                ApplyToJob(companyphonenumber, newuser);
                             }
 
                         }
@@ -858,14 +889,18 @@ namespace CourseProject
                         Console.WriteLine("LOG OUT select [5]");
 
                         int choose = Convert.ToInt32(Console.ReadLine());
-                        var workercv = employeelist.SingleOrDefault(x => x.Username == newuser.Username);
+                        var employer = employeelist.SingleOrDefault(x => x.Username == newuser.Username);
                         if (choose == 2)
                         {
                             Console.WriteLine("_______________________________________\n");
                             Console.WriteLine("__________YOUR_ADVERTISEMENT___________");
                             Console.WriteLine("_______________________________________\n");
-                            if (workercv != null)
-                                workercv.ShowEmployeeAdversitement();
+                            if (employer != null)
+                            {
+                                employer.ShowEmployeeAdversitement();
+                                ShowApplyingToJob(employer);
+                            }
+
                         }
                         else if (choose == 1)
                         {
@@ -914,13 +949,16 @@ namespace CourseProject
     {
         static void ShowInterfaceOfProgram()
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("\t================================================================");
-            Console.WriteLine("\t||                                                            ||");
-            Console.WriteLine("\t||                    ADVERTISEMENT SITE                      ||");
-            Console.WriteLine("\t||                                                            ||");
-            Console.WriteLine("\t================================================================");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.Green;
+            Console.WriteLine("\t================================================================     ");
+            Console.WriteLine("\t||                                                            ||     ");
+            Console.WriteLine("\t||                    ADVERTISEMENT SITE                      ||     ");
+            Console.WriteLine("\t||                                                            ||     ");
+            Console.WriteLine("\t================================================================     ");
             Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.BackgroundColor = ConsoleColor.Black;
         }
         static void Main(string[] args)
         {
