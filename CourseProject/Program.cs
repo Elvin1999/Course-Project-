@@ -381,7 +381,7 @@ namespace CourseProject
                 return true;
             }
             return false;
-        }
+        } 
         public User UserRegistriation()
         {
             string username, mail, status, password, checkpassword;
