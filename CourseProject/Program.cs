@@ -6,11 +6,15 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.IO;
+
 namespace CourseProject
 {
     class User
     {
-        public User() { }
+        public User()
+        {
+
+        }
         public User(string email, string username, string status, string password)
         {
             Email = email;
@@ -38,11 +42,15 @@ namespace CourseProject
             }
             Console.WriteLine();
             Console.WriteLine("__________________________________\n");
+
         }
     }
     class Worker : User
     {
-        public Worker() { }
+        public Worker()
+        {
+
+        }
         public string Name { get; set; }
         public string Surname { get; set; }
         public int Age { get; set; }
@@ -53,6 +61,7 @@ namespace CourseProject
         public string PhoneNumber { get; set; }
         public string SpecialityCategory { get; set; }
         public string ExperienceCategory { get; set; }
+
         [JsonIgnore]
         public List<string> Experience = new List<string>() {
              "Less than 1 years",
@@ -60,16 +69,19 @@ namespace CourseProject
              "From 3 until 5 years",
              "More than 5 years"
         };
+
         [JsonIgnore]
         public List<string> EducationCategories = new List<string>()
         {
             "Medium","Uncompleted high degree","High degree"
         };
+
         [JsonIgnore]
         public List<string> Categories = new List<string>()
         {
             "Programmer","Journalist","IT Specialist","Doctor","Translater"
         };
+
         public Worker(string name, string surname, int age, string gender, int category, int experiencecategory,
             int educationcategory, string city, decimal minSalary, string phoneNumber, User user)
             : base(user.Email, user.Username, user.Status, user.Password)
@@ -85,6 +97,7 @@ namespace CourseProject
             SpecialityCategory = Categories[category - 1];
             ExperienceCategory = Experience[experiencecategory - 1];
         }
+
         public void ShowWorker()
         {
             Console.WriteLine("__________________________________\n");
@@ -110,6 +123,7 @@ namespace CourseProject
             Console.WriteLine("__________________________________\n");
         }
     }
+
     class Employee : User
     {
         public List<string> AppUsername = new List<string>();
@@ -124,6 +138,7 @@ namespace CourseProject
         public string Education { get; set; }
         public string Experience { get; set; }
         public string PhoneNumber { get; set; }
+
         [JsonIgnore]
         public List<string> ExperienceCategory = new List<string>() {
             "Less than 1 years",
@@ -131,16 +146,19 @@ namespace CourseProject
              "From 3 until 5 years",
              "More than 5 years"
         };
+
         [JsonIgnore]
         public List<string> EducationCategories = new List<string>()
         {
            "Medium","Uncompleted high degree","High degree"
         };
+
         [JsonIgnore]
         public List<string> Categories = new List<string>()
         {
             "Programmer","Journalist","IT Specialist","Doctor","Translater"
         };
+
         public Employee(string advertisementName, string companyName, int category, string ınformationAboutWork,
             string city, decimal salary, int minimumAge, int education, int experience, string phoneNumber, User user)
             : base(user.Email, user.Username, user.Status, user.Password)
@@ -156,6 +174,7 @@ namespace CourseProject
             Experience = ExperienceCategory[experience - 1];
             PhoneNumber = phoneNumber;
         }
+
         public void ShowEmployeeAdversitement()
         {
             Console.ForegroundColor = ConsoleColor.Green;
@@ -181,14 +200,17 @@ namespace CourseProject
             Console.WriteLine($"Phone number - > {PhoneNumber}");
             Console.WriteLine("_____________________________________\n");
         }
+
     }
     class Controller
     {
+
         List<Worker> workerlist = new List<Worker>(); Worker testworker = new Worker();
         Employee testemployee = new Employee();
         List<Employee> employeelist = new List<Employee>();
         List<User> users = new List<User>();
         JsonSerializer json = new JsonSerializer();
+
         public Controller()
         {
             FileInfo fileinfo = new FileInfo("workers.json");
@@ -219,6 +241,7 @@ namespace CourseProject
                 users = DeserializerFromJasonUsers();
             }
         }
+
         public void SerializerToJasonWorkers()
         {
             using (StreamWriter sw = new StreamWriter("workers.json"))
@@ -226,6 +249,7 @@ namespace CourseProject
                 json.Serialize(sw, workerlist);
             }
         }
+
         public List<Worker> DeserializerFromJasonWorkers()
         {
             using (StreamReader sr = new StreamReader("workers.json"))
@@ -235,6 +259,7 @@ namespace CourseProject
                 return workerlist;
             }
         }
+
         public void SerializerToJasonEmployee()
         {
             using (StreamWriter sw = new StreamWriter("employee.json"))
@@ -242,6 +267,7 @@ namespace CourseProject
                 json.Serialize(sw, employeelist);
             }
         }
+
         public List<Employee> DeserializerFromJasonEmployee()
         {
             using (StreamReader sr = new StreamReader("employee.json"))
@@ -251,6 +277,7 @@ namespace CourseProject
                 return employeelist;
             }
         }
+
         public void SerializerToJasonUsers()
         {
             using (StreamWriter sw = new StreamWriter("users.json"))
@@ -258,6 +285,7 @@ namespace CourseProject
                 json.Serialize(sw, users);
             }
         }
+
         public List<User> DeserializerFromJasonUsers()
         {
             using (StreamReader sr = new StreamReader("users.json"))
@@ -267,6 +295,7 @@ namespace CourseProject
                 return users;
             }
         }
+
         public Worker WorkerRegistriation(User user)
         {
             int age, categorys, excategory, educategory;
@@ -321,6 +350,7 @@ namespace CourseProject
             return new Worker(name, surname, age, gender, categorys, excategory, educategory, city,
                 minsalary, phonenumber, user);
         }
+
         public string ToHidePassword(string password)//now i do not this method to hide something
         {
             string newstr = "";
@@ -331,6 +361,7 @@ namespace CourseProject
             }
             return newstr;
         }
+
         public string RandomCode()
         {
             Random random = new Random();
@@ -354,6 +385,7 @@ namespace CourseProject
             str = new string(vs);
             return str;
         }
+
         public bool UsernameIsExist(string name)
         {
             var item = users.SingleOrDefault(x => x.Username == name);
@@ -363,6 +395,7 @@ namespace CourseProject
             }
             return false;
         }
+
         public bool MailIsExist(string mail)
         {
             var item = users.SingleOrDefault(x => x.Email == mail);
@@ -372,6 +405,7 @@ namespace CourseProject
             }
             return false;
         }
+
         public bool PhonenumberIsExist(string phonenumber)
         {
             var item = workerlist.SingleOrDefault(x => x.PhoneNumber == phonenumber);
@@ -382,6 +416,7 @@ namespace CourseProject
             }
             return false;
         }
+
         public User UserRegistriation()
         {
             string username, mail, status, password, checkpassword;
@@ -466,6 +501,7 @@ namespace CourseProject
             } while (codecheck != code);
             return new User(mail, username, newstatus, password);
         }
+
         public bool CheckPhoneNumber(string phonenumber)
         {
             Regex regex = new Regex(@"^\+994(50|51|55|70|77)([0-9]){7}$");
@@ -475,6 +511,7 @@ namespace CourseProject
             }
             return false;
         }
+
         public bool CheckStatus(string status)
         {
             var newstring = status.ToLower();
@@ -484,6 +521,7 @@ namespace CourseProject
             }
             return false;
         }
+
         public Employee EmployeeRegistriation(User user)
         {
             string advname, companyname, information, city, phonenumber; decimal salary;
@@ -540,6 +578,7 @@ namespace CourseProject
 
             return new Employee(advname, companyname, categorys, information, city, salary, minAge, education, experience, phonenumber, user);
         }
+
         public bool CheckMail(string mail)
         {
             Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
@@ -549,6 +588,7 @@ namespace CourseProject
             }
             return false;
         }
+
         public bool CheckUsername(string username)
         {
             Regex name = new Regex(@"^[A-Z]{1,3}?[a-zA-Z0-9]{8,12}?");
@@ -558,6 +598,7 @@ namespace CourseProject
             }
             return false;
         }
+
         public bool CheckPassword(string password)
         {
             if (password.Length > 15)
@@ -571,18 +612,21 @@ namespace CourseProject
             }
             return false;
         }
+
         public List<Employee> FindSimilarAdvertisement(Worker worker)
         {
             var advcollections = employeelist.Where(x => x.Salary >= worker.MinSalary && x.SpecialityCategory == worker.SpecialityCategory
             && x.City == worker.City).ToList();
             return advcollections;////////////////
         }
+
         public void ApplyToJob(string phonenumber, User user)
         {
             var thiscompany = employeelist.SingleOrDefault(x => x.PhoneNumber == phonenumber);
             thiscompany.AppUsername.Add(user.Username);
             SerializerToJasonEmployee();
         }
+
         public void ShowApplyingToJob(Employee employee)
         {
             for (int i = 0; i < employee.AppUsername.Count; i++)
@@ -591,6 +635,7 @@ namespace CourseProject
                 worker.ShowWorker();
             }
         }
+
         public int Run()
         {
             Console.SetCursorPosition(20, 10);
@@ -727,9 +772,7 @@ namespace CourseProject
                     while (true)
                     {
                         Console.Clear();
-                        Console.WriteLine("Create your Adversitement [1] Show your Adversitements [2] LOG OUT select 5");
-                        Console.WriteLine("LOG OUT select [5]");
-
+                        Console.WriteLine("Create your Adversitement [1] Show your Adversitements [2] Appeals [3] LOG OUT select [5]");
                         int choose = Convert.ToInt32(Console.ReadLine());
                         var employercv = employeelist.SingleOrDefault(x => x.Username == usernew.Username);
                         if (choose == 2)
@@ -740,8 +783,12 @@ namespace CourseProject
                             if (employercv != null)
                             {
                                 employercv.ShowEmployeeAdversitement();
-                                ShowApplyingToJob(employercv);
                             }
+                        }
+                        else if (choose == 3)
+                        {
+                            Console.WriteLine($"Adversitement name - > {employercv.AdvertisementName} ");
+                            ShowApplyingToJob(employercv);
                         }
                         else if (choose == 1)
                         {
@@ -885,9 +932,7 @@ namespace CourseProject
                     while (true)
                     {
                         Console.Clear();
-                        Console.WriteLine("Create your Adversitement [1] Show your Adversitements [2] LOG OUT select 5");
-                        Console.WriteLine("LOG OUT select [5]");
-
+                        Console.WriteLine("Create your Adversitement [1] Show your Adversitements [2] Appeals [3]LOG OUT select [5]");
                         int choose = Convert.ToInt32(Console.ReadLine());
                         var employer = employeelist.SingleOrDefault(x => x.Username == newuser.Username);
                         if (choose == 2)
@@ -898,9 +943,14 @@ namespace CourseProject
                             if (employer != null)
                             {
                                 employer.ShowEmployeeAdversitement();
-                                ShowApplyingToJob(employer);
+
                             }
 
+                        }
+                        else if (choose == 3)
+                        {
+                            Console.WriteLine($"Adversitement name - > {employer.AdvertisementName} ");
+                            ShowApplyingToJob(employer);
                         }
                         else if (choose == 1)
                         {
@@ -924,6 +974,7 @@ namespace CourseProject
             }
             return 1;
         }
+
         public User SignIn()
         {
             bool check; User myuser;
@@ -945,10 +996,13 @@ namespace CourseProject
             return myuser;
         }
     }
+
     class Program
     {
+
         static void ShowInterfaceOfProgram()
         {
+
             Console.ForegroundColor = ConsoleColor.Black;
             Console.BackgroundColor = ConsoleColor.Green;
             Console.WriteLine("\t================================================================     ");
@@ -959,12 +1013,15 @@ namespace CourseProject
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Green;
             Console.BackgroundColor = ConsoleColor.Black;
+
         }
         static void Main(string[] args)
         {
+
             ShowInterfaceOfProgram();
             while (true)
             {
+
                 Controller controller = new Controller();
                 var backtomenu = controller.Run();
 
