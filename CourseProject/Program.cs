@@ -210,7 +210,6 @@ namespace CourseProject
         List<Employee> employeelist = new List<Employee>();
         List<User> users = new List<User>();
         JsonSerializer json = new JsonSerializer();
-
         public Controller()
         {
             FileInfo fileinfo = new FileInfo("workers.json");
@@ -295,7 +294,6 @@ namespace CourseProject
                 return users;
             }
         }
-
         public Worker WorkerRegistriation(User user)
         {
             int age, categorys, excategory, educategory;
@@ -622,9 +620,15 @@ namespace CourseProject
 
         public void ApplyToJob(string phonenumber, User user)
         {
+
             var thiscompany = employeelist.SingleOrDefault(x => x.PhoneNumber == phonenumber);
-            thiscompany.AppUsername.Add(user.Username);
-            SerializerToJasonEmployee();
+            var check = thiscompany.AppUsername.Contains(user.Username);
+            if (!check)
+            {
+                thiscompany.AppUsername.Add(user.Username);
+                SerializerToJasonEmployee();
+            }
+
         }
 
         public void ShowApplyingToJob(Employee employee)
@@ -787,8 +791,12 @@ namespace CourseProject
                         }
                         else if (choose == 3)
                         {
-                            Console.WriteLine($"Adversitement name - > {employercv.AdvertisementName} ");
-                            ShowApplyingToJob(employercv);
+                            if (employercv != null)
+                            {
+                                Console.WriteLine($"Adversitement name - > {employercv.AdvertisementName} ");
+                                ShowApplyingToJob(employercv);
+                            }
+
                         }
                         else if (choose == 1)
                         {
@@ -945,12 +953,16 @@ namespace CourseProject
                                 employer.ShowEmployeeAdversitement();
 
                             }
-
                         }
                         else if (choose == 3)
                         {
-                            Console.WriteLine($"Adversitement name - > {employer.AdvertisementName} ");
-                            ShowApplyingToJob(employer);
+                            if (employer != null)
+                            {
+                                Console.WriteLine($"Adversitement name - > {employer.AdvertisementName} ");
+                                ShowApplyingToJob(employer);
+
+                            }
+
                         }
                         else if (choose == 1)
                         {
