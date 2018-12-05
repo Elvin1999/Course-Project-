@@ -687,6 +687,10 @@ namespace CourseProject
             if (selection == 1)
             {//SIGN IN
                 var usernew = SignIn(); int select1;
+                if (usernew.Username == "exit")
+                {
+                    return 1;
+                }
                 log.Info($"{usernew.Username} was Sign In");
                 if (usernew.Status == "worker")
                 {
@@ -858,7 +862,6 @@ namespace CourseProject
                         }
                     }
                 }
-
             }
             else if (selection == 2)
             {   //SIGN UP
@@ -1042,19 +1045,26 @@ namespace CourseProject
 
         public User SignIn()
         {
-            bool check; User myuser;
+            bool check; User myuser = new User(" "," "," "," ");
             do
             {
                 Console.Write("Username - >");
                 string username = Console.ReadLine();
+                if (username == "exit")
+                {
+                    myuser.Username = "exit";
+                    break;
+                }
                 Console.Write("Password - >");
                 string password = Console.ReadLine();
                 myuser = users.SingleOrDefault(x => x.Username == username && x.Password == password);
                 check = myuser is User;
                 if (!check)
                 {
+                    myuser = new User(" ", " ", " ", " ");
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Your username or password is not correct");
+                    Console.WriteLine("Your username or password is not correct" +
+                        " If you do not have profile please write \"exit\" keyword in username side and you'll return menu");
                     Console.ForegroundColor = ConsoleColor.Green;
                 }
             } while (!check);
@@ -1086,7 +1096,6 @@ namespace CourseProject
             ShowInterfaceOfProgram();
             while (true)
             {
-
                 Controller controller = new Controller();
                 var backtomenu = controller.Run();
                 if (backtomenu == 1)
