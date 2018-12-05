@@ -623,7 +623,14 @@ namespace CourseProject
 
             var thiscompany = employeelist.SingleOrDefault(x => x.PhoneNumber == phonenumber);
             var check = thiscompany.AppUsername.Contains(user.Username);
-            if (!check)
+            var appointperson = workerlist.SingleOrDefault(x => x.Username == user.Username);
+            if (appointperson == null)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("You can not apply for job because you do not have a CV");
+                Console.ForegroundColor = ConsoleColor.Green;
+            }
+           else if (!check)
             {
                 thiscompany.AppUsername.Add(user.Username);
                 SerializerToJasonEmployee();
@@ -636,7 +643,11 @@ namespace CourseProject
             for (int i = 0; i < employee.AppUsername.Count; i++)
             {
                 var worker = workerlist.SingleOrDefault(x => x.Username == employee.AppUsername[i]);
-                worker.ShowWorker();
+                if (worker != null)
+                {
+                    worker.ShowWorker();
+                }
+
             }
         }
 
