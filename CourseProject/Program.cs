@@ -1065,6 +1065,7 @@ namespace CourseProject
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Your username or password is not correct" +
                         " If you do not have profile please write \"exit\" keyword in username side and you'll return menu");
+                    log.Error("Your username or password is not correct");
                     Console.ForegroundColor = ConsoleColor.Green;
                 }
             } while (!check);
