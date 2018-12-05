@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.IO;
+using NLog;
 
 namespace CourseProject
 {
@@ -206,6 +207,7 @@ namespace CourseProject
     {
 
         List<Worker> workerlist = new List<Worker>(); Worker testworker = new Worker();
+        Logger log = LogManager.GetCurrentClassLogger();
         Employee testemployee = new Employee();
         List<Employee> employeelist = new List<Employee>();
         List<User> users = new List<User>();
@@ -389,6 +391,7 @@ namespace CourseProject
             var item = users.SingleOrDefault(x => x.Username == name);
             if (item != null)
             {
+                log.Error($"{name} is exist");
                 return true;
             }
             return false;
@@ -399,6 +402,7 @@ namespace CourseProject
             var item = users.SingleOrDefault(x => x.Email == mail);
             if (item != null)
             {
+                log.Error($"{mail} is exist");
                 return true;
             }
             return false;
@@ -410,6 +414,7 @@ namespace CourseProject
             var item2 = employeelist.SingleOrDefault(x => x.PhoneNumber == phonenumber);
             if (item != null || item2 != null)
             {
+                log.Error($"{phonenumber} is exist");
                 return true;
             }
             return false;
@@ -507,6 +512,7 @@ namespace CourseProject
             {
                 return true;
             }
+            log.Error($"{phonenumber} is not matching");
             return false;
         }
 
@@ -517,6 +523,7 @@ namespace CourseProject
             {
                 return true;
             }
+            log.Error($"{status} is wrong");
             return false;
         }
 
@@ -584,6 +591,7 @@ namespace CourseProject
             {
                 return true;
             }
+            log.Error($"{mail} is not matching");
             return false;
         }
 
@@ -594,6 +602,7 @@ namespace CourseProject
             {
                 return true;
             }
+            log.Error($"{username} is not matching");
             return false;
         }
 
@@ -601,6 +610,7 @@ namespace CourseProject
         {
             if (password.Length > 15)
             {
+                log.Error("Count of letter was greater than 15");
                 return false;
             }
             Regex pass = new Regex(@"^[A-Z]{1,3}?[a-zA-Z0-9]{2,10}?[!-/_]{0,3}?[a-zA-Z0-9]{5,10}?[!-/_]{0,3}");
@@ -608,6 +618,7 @@ namespace CourseProject
             {
                 return true;
             }
+            log.Error($"{password} is not matching");
             return false;
         }
 
@@ -628,11 +639,13 @@ namespace CourseProject
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("You can not apply for job because you do not have a CV");
+                log.Info($"{user.Username} you can not apply for job because you do not have a CV");
                 Console.ForegroundColor = ConsoleColor.Green;
             }
             else if (!check)
             {
                 thiscompany.AppUsername.Add(user.Username);
+                log.Info($"{user.Username} was added to Appliers list");
                 SerializerToJasonEmployee();
             }
 
@@ -674,6 +687,7 @@ namespace CourseProject
             if (selection == 1)
             {//SIGN IN
                 var usernew = SignIn(); int select1;
+                log.Info($"{usernew.Username} was Sign In");
                 if (usernew.Status == "worker")
                 {
                     while (true)
@@ -689,7 +703,9 @@ namespace CourseProject
                         if (select1 == 1)
                         {
                             worker = WorkerRegistriation(usernew);
+                            log.Info($"{usernew.Username} created CV ");
                             workerlist.Add(worker);
+                            log.Info("Worker added to list");
                             SerializerToJasonWorkers();
                         }
                         else if (select1 == 2)
@@ -714,6 +730,7 @@ namespace CourseProject
                             if (workercv == null)
                             {
                                 Console.WriteLine("You do not have cv form please create your CV");
+                                log.Info($"{usernew.Username} you can not apply for job because you do not have a CV");
                             }
                             else
                             {
@@ -829,6 +846,7 @@ namespace CourseProject
                         {
                             employee = EmployeeRegistriation(usernew);
                             employeelist.Add(employee);
+                            log.Info($"{usernew.Username} created Advertisement");
                             SerializerToJasonEmployee();
                         }
                         else if (choose == 4) return 1;
@@ -847,6 +865,7 @@ namespace CourseProject
                 int select1;
                 newuser = UserRegistriation();
                 users.Add(newuser);
+                log.Info($"{newuser.Username} created profile");
                 SerializerToJasonUsers();
                 if (newuser.Status == "worker")
                 {
@@ -864,6 +883,7 @@ namespace CourseProject
                         {
                             worker = WorkerRegistriation(newuser);
                             workerlist.Add(worker);
+                            log.Info($"{newuser.Username} created CV");
                             SerializerToJasonWorkers();
                         }
                         else if (select1 == 2)
@@ -888,6 +908,7 @@ namespace CourseProject
                             if (workercv == null)
                             {
                                 Console.WriteLine("You do not have cv form please create your CV");
+                                log.Info($"{newuser.Username} you can not apply for job because you do not have a CV");
                             }
                             else
                             {
@@ -1068,7 +1089,6 @@ namespace CourseProject
 
                 Controller controller = new Controller();
                 var backtomenu = controller.Run();
-
                 if (backtomenu == 1)
                 {
                     Console.Clear();
