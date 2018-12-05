@@ -630,7 +630,7 @@ namespace CourseProject
                 Console.WriteLine("You can not apply for job because you do not have a CV");
                 Console.ForegroundColor = ConsoleColor.Green;
             }
-           else if (!check)
+            else if (!check)
             {
                 thiscompany.AppUsername.Add(user.Username);
                 SerializerToJasonEmployee();
@@ -664,7 +664,12 @@ namespace CourseProject
             Console.WriteLine("\t                                   ");
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.Green;
-            int selection = Convert.ToInt32(Console.ReadLine());
+            int selection;
+            do
+            {
+                selection = Convert.ToInt32(Console.ReadLine());
+            } while (!(selection >= 1 && selection <= 3));
+
             Console.Clear();
             if (selection == 1)
             {//SIGN IN
@@ -676,7 +681,11 @@ namespace CourseProject
                         Console.Clear();
                         Console.WriteLine("Create your CV [1]\nSearch Job [2]\n Show your CV [3]\nShow all adversitement [4]" +
                             " Search Job with category [5]\nLog Out [6]");
-                        Console.Write("Select - > "); select1 = Convert.ToInt32(Console.ReadLine());
+                        do
+                        {
+                            Console.Write("Select - > "); select1 = Convert.ToInt32(Console.ReadLine());
+                        } while (!(select1 >= 1 && select1 <= 6));
+
                         if (select1 == 1)
                         {
                             worker = WorkerRegistriation(usernew);
@@ -784,11 +793,18 @@ namespace CourseProject
                 }
                 else if (usernew.Status == "employee")
                 {
+                    int choose;
                     while (true)
                     {
                         Console.Clear();
-                        Console.WriteLine("Create your Adversitement [1] Show your Adversitements [2] Appeals [3] LOG OUT select [5]");
-                        int choose = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("Create your Adversitement [1] Show your Adversitements [2] Appeals [3] LOG OUT select [4]");
+
+                        do
+                        {
+                            choose = Convert.ToInt32(Console.ReadLine());
+                        } while (!(choose >= 1 & choose <= 4));
+
+
                         var employercv = employeelist.SingleOrDefault(x => x.Username == usernew.Username);
                         if (choose == 2)
                         {
@@ -815,7 +831,7 @@ namespace CourseProject
                             employeelist.Add(employee);
                             SerializerToJasonEmployee();
                         }
-                        else if (choose == 5) return 1;
+                        else if (choose == 4) return 1;
                         Console.WriteLine("Back to Worker Menu select [0]");
                         int select2 = Convert.ToInt32(Console.ReadLine());
                         if (select2 == 0)
@@ -828,6 +844,7 @@ namespace CourseProject
             }
             else if (selection == 2)
             {   //SIGN UP
+                int select1;
                 newuser = UserRegistriation();
                 users.Add(newuser);
                 SerializerToJasonUsers();
@@ -836,12 +853,15 @@ namespace CourseProject
                     while (true)
                     {
                         Console.Clear();
-                        Console.WriteLine("Create your CV [1]\nSearch Job [2]\n Show your CV [3]\nShow all adversitement [4]" +
+                        Console.WriteLine("Create your CV [1]\nSearch Job [2]\n" +
+                            " Show your CV [3]\nShow all adversitement [4]" +
                             " Search Job with category [5]\nLog Out [6]");
-                        Console.Write("Select - > "); int select1 = Convert.ToInt32(Console.ReadLine());
+                        do
+                        {
+                            Console.Write("Select - > "); select1 = Convert.ToInt32(Console.ReadLine());
+                        } while (!(select1 >= 1 && select1 <= 6));
                         if (select1 == 1)
                         {
-
                             worker = WorkerRegistriation(newuser);
                             workerlist.Add(worker);
                             SerializerToJasonWorkers();
@@ -932,7 +952,6 @@ namespace CourseProject
                                 string companyphonenumber = Console.ReadLine();
                                 ApplyToJob(companyphonenumber, newuser);
                             }
-
                         }
                         else if (select1 == 6)
                         {
@@ -948,11 +967,15 @@ namespace CourseProject
                 }
                 else if (newuser.Status == "employee")
                 {
+                    int choose;
                     while (true)
                     {
                         Console.Clear();
-                        Console.WriteLine("Create your Adversitement [1] Show your Adversitements [2] Appeals [3]LOG OUT select [5]");
-                        int choose = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("Create your Adversitement [1] Show your Adversitements [2] Appeals [3]LOG OUT select [4]");
+                        do
+                        {
+                            choose = Convert.ToInt32(Console.ReadLine());
+                        } while (!(choose>=1&&choose<=4));
                         var employer = employeelist.SingleOrDefault(x => x.Username == newuser.Username);
                         if (choose == 2)
                         {
@@ -971,9 +994,7 @@ namespace CourseProject
                             {
                                 Console.WriteLine($"Adversitement name - > {employer.AdvertisementName} ");
                                 ShowApplyingToJob(employer);
-
                             }
-
                         }
                         else if (choose == 1)
                         {
@@ -981,7 +1002,7 @@ namespace CourseProject
                             employeelist.Add(employee);
                             SerializerToJasonEmployee();
                         }
-                        else if (choose == 5) return 1;
+                        else if (choose == 4) return 1;
                         Console.WriteLine("Back to Worker Menu select [0]");
                         int select2 = Convert.ToInt32(Console.ReadLine());
                         if (select2 == 0)
